@@ -1,5 +1,5 @@
 import express,{Router} from 'express';
-import * as topicController from '../../controllers/client/topic.controller';
+import * as topicController from '../../controllers/client/topics.controller';
 const router = Router();
 
 
