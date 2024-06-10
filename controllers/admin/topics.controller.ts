@@ -13,6 +13,19 @@ export const create = async (req:Request,res:Response):Promise<void>=>{
 }
 
 export const createPost = async (req:Request,res:Response):Promise<void>=>{
-    console.log(req.body);
-    // res.render("admin/pages/topics/create");
+    const topicBody = {
+        title:req.body.title,
+        avatar:req.body.avatar,
+        description:req.body.description,
+        status:req.body.status
+    }
+    try{
+        const topic = new topicsModel(topicBody);
+        await topic.save();
+        req["flash"]("success","Thêm chủ đề thành công!!!");
+        res.redirect("/admin/topics/create");
+    }catch(error){
+        req["flash"]("error","Thêm chủ đề thất bại!!!");
+        res.redirect("/admin/topics/create");
+    }
 }
