@@ -1,13 +1,38 @@
 import express,{Express, Request,Response} from 'express';
 
 import topicsModel from '../../models/topic.model';
+import paginationHelper from '../../helpers/pagination';
 
 
 export const index = async (req:Request,res:Response):Promise<void>=>{
-    const topics = await topicsModel.find({
-        deleted:false,
-    });
-    res.render("admin/pages/topics/index",{topics:topics});
+    type typeFilter={
+        deleted:boolean,
+        status?:string,
+    }
+    let sort:any = {
+        title:"asc"
+    }
+    let filter:typeFilter = {
+        deleted:false
+    }
+    if(req.query.typeFilter){
+        filter.status = req.query.typeFilter as string;
+    }
+    if(req.query.sort){
+       sort.title = req.query.sort;
+    }
+    // pagination start -----------------------------------
+    let objPagination:any = {
+        limiteItem:4,
+        currentPage:1,   
+    }
+    const countTopic = await topicsModel.find(filter).countDocuments();
+    objPagination.totalPage = Math.ceil(countTopic/objPagination.limiteItem);
+    const resultPagination = paginationHelper(objPagination,req.query);
+
+    // pagination end ---------------------------------------
+    const topics = await topicsModel.find(filter).limit(objPagination.limiteItem).skip(objPagination.skipItem).sort(sort);
+    res.render("admin/pages/topics/index",{topics:topics,objPagination:resultPagination});
 }
 
 export const create = async (req:Request,res:Response):Promise<void>=>{
@@ -96,3 +121,40 @@ export const editPatch = async(req:Request,res:Response):Promise<void>=>{
 export const deleted = async (req:Request,res:Response):Promise<void>=>{
 
 }
+
+
+export const changeMulti = async (req:Request,res:Response):Promise<void>=>{
+    const type= req.body.type;
+    const value = JSON.parse(req.body.value);
+
+        switch(type){
+            case "active":
+                await topicsModel.updateMany({
+                    _id:value
+                },{
+                    status:"active"
+                });
+                break;
+            case "inactive":
+                await topicsModel.updateMany({
+                    _id:value
+                },{
+                    status:"inactive"
+                })
+                break;
+            case "delete-all":
+                await topicsModel.updateMany({
+                    _id:value
+                },{
+                    deleted:true
+                })
+                break;
+            default:
+                req["flash"]("error","Cập nhật chủ đề thất bại!!!");
+                res.redirect("back");
+                return;
+            }
+    req["flash"]("success","Cập nhật chủ đề thành công!!!");
+    res.redirect("back");
+}
+

@@ -14,6 +14,7 @@ router.get("/detail/:id",topicController.detail);
 router.get("/edit/:id",topicController.edit);
 router.patch("/edit/:id",upload.single('avatar'),uploadCloud,validate.valiEdit,topicController.editPatch);
 router.patch("/:actionUpdate/:id/:status",topicController.actionUpdate);
+router.patch("/change-multi",topicController.changeMulti)
 export default router;
 
 

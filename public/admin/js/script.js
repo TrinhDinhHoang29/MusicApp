@@ -53,7 +53,6 @@ if(buttonStatus.length>0){
                     item.setAttribute("data-update",`${id} active`)
                     item.classList.replace("bg-success","bg-danger");
                     item.innerHTML = "Dừng hoạt động";
-
                 }
             });
         })
@@ -88,17 +87,101 @@ if(buttonDelete.length>0){
 // end delete topics
 
 
-// Tạo thông báo khi cập nhật ở client
-// function message(type,time,text){
-//     const div = document.createElement('div');
-//     div.classList.add(`${type}`);
-//     div.classList.add("info");
-//     div.classList.add("my-3");
-//     div.innerHTML=`<div class="alert alert-${type}" show-alert data-time=${time}> ${text} </div>`;
-//     const wrapper = document.querySelector("#wrapper");
-//     wrapper.insertBefore(div,wrapper.firstChild);
-// }
+
+
+// xử lý checkbox changeMulti 
+const sumCheckbox = document.querySelector("[sum-checkbox]");
+if(sumCheckbox){
+    const changeMulti = document.querySelectorAll("[change-multi]");
+    sumCheckbox.addEventListener("click",()=>{
+        if(sumCheckbox.checked==true){
+            changeMulti.forEach(e=>e.checked=true)
+        }else{
+            changeMulti.forEach(e=>e.checked=false)
+        }
+    })
+    changeMulti.forEach(item=>{
+        item.addEventListener("click",()=>{
+        let count = 0;
+        changeMulti.forEach(element=>{
+            if(element.checked==true)
+                count++;
+        })
+        if(count==sumCheckbox.getAttribute("sum-checkbox")){
+            sumCheckbox.checked=true;
+        }else{
+            sumCheckbox.checked=false;
+        }  
+        })
+    })
+}
+
+// end xử lý checkbox changeMulti 
+
+
+// changeMulti
+
+const frmChangeMulti = document.querySelector("[form-changeMulti]");
+if(frmChangeMulti){
+    frmChangeMulti.addEventListener("submit",e=>{
+        e.preventDefault();
+        const typeUpdate = document.querySelector("[type-update]")
+        if(typeUpdate.value=="delete-all"){
+            if(window.confirm("Bạn có chất muốn xoá !!")==false)
+                return;
+        }
+        const arrUpdate=[];
+        const changeMulti = document.querySelectorAll("[change-multi]");
+        changeMulti.forEach(i=>i.checked==true?arrUpdate.push(i.value):"");
+        const inputChangeMulti = document.querySelector("[input-changeMulti]");
+        inputChangeMulti.value = JSON.stringify(arrUpdate);
+        frmChangeMulti.submit();
+    })
+}
+
+//end changeMulti
 
 
 
-// end  Tạo thông báo khi cập nhật ở client
+//Bộ lọc
+const typeFilter = document.querySelector("[type-filter]");
+if(typeFilter){
+    typeFilter.addEventListener("change",()=>{
+        const value = typeFilter.value;
+        const url = new URL(window.location.href);
+       url.searchParams.set("typeFilter",value);
+       window.location.href = url;
+    })
+}
+
+//end Bộ lọc
+
+//Sắp xếp
+
+const typeSort = document.querySelector("[type-sort]");
+if(typeSort){
+    typeSort.addEventListener("change",()=>{
+        const value = typeSort.value;
+        const url = new URL(window.location.href);
+       url.searchParams.set("sort",value);
+       window.location.href = url;
+    })
+}
+
+//end sắp xếp
+
+
+
+//pagination start ---------------
+const buttonsPagination = document.querySelectorAll("[button-pagination]");
+if(buttonsPagination){
+    let url = new URL(window.location.href);
+    buttonsPagination.forEach(element=>{
+        element.addEventListener("click",()=>{
+            url.searchParams.set("page",element.getAttribute("button-pagination"));
+            console.log(element.getAttribute("button-pagination"));
+            window.location.href = url.href;
+        })
+    })
+}
+//pagination end --------------------
