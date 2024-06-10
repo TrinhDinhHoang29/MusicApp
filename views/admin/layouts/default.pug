@@ -15,9 +15,10 @@ head
   link(href='/admin/css/sb-admin-2.min.css', rel='stylesheet')
   link(rel="stylesheet", href="/admin/css/style.css")
 // Page Wrapper
-+messages-error("5000")
-+messages-success("5000")  
+  
 #wrapper
+  +messages-error("5000")
+  +messages-success("5000")
   include ../partials/navbar.pug
   // Content Wrapper
   block main

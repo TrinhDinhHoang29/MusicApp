@@ -8,6 +8,5 @@ if(showAlert){
    setTimeout(()=>{
     document.querySelector(".messages").remove();
 },dataTime+2000);
-   
 }
 //end alert--------------------------

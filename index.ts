@@ -37,7 +37,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
-
 routerClient(app);
 routerAdmin(app);
 app.get("*",(req,res)=>{

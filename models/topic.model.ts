@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import slug from 'mongoose-slug-updater';
+mongoose.plugin(slug);
 
 const topicSchema:Schema = new  mongoose.Schema({
     title:String,
