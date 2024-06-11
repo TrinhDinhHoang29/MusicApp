@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import slug from 'mongoose-slug-updater';
+mongoose.plugin(slug);
 
 const singerSchema:Schema = new  mongoose.Schema({
     fullName:String,

@@ -37,10 +37,11 @@ if(buttonStatus.length>0){
         item.addEventListener("click",(e)=>{
             const id = item.getAttribute("data-update").split(" ")[0];
             const status = item.getAttribute("data-update").split(" ")[1];
+            const page = window.location.pathname.split("/")[2];
             const option = {
                 method:"PATCH"
             }
-            const link = `/admin/topics/status/${id}/${status}`;
+            const link = `/admin/${page}/status/${id}/${status}`;
             fetch(link,option)
             .then(res=>res.json())
             .then(data=>{
@@ -68,7 +69,9 @@ if(buttonDelete.length>0){
         item.addEventListener("click",()=>{
             if (window.confirm("Bạn có chất muốn xoá !!")){
                 const id = item.getAttribute("data-update");
-                const link = `/admin/topics/deleted/${id}/true`;
+                const page = window.location.pathname.split("/")[2];
+
+                const link = `/admin/${page}/deleted/${id}/true`;
                 fetch(link,{
                     method:"PATCH"
                 })
@@ -185,3 +188,18 @@ if(buttonsPagination){
     })
 }
 //pagination end --------------------
+
+
+//view quantity item
+
+const typeView = document.querySelector("[type-view]");
+if(typeView){
+    typeView.addEventListener("change",()=>{
+        const value = typeView.value;
+        const url = new URL(window.location.href);
+       url.searchParams.set("limiteItem",value);
+       window.location.href = url;
+    })
+}
+
+//end view quantity item

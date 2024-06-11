@@ -2,8 +2,8 @@ import express,{Express, Request,Response} from 'express';
 
 import topicsModel from '../../models/topic.model';
 import paginationHelper from '../../helpers/pagination';
-
-
+import * as validateTopic from '../../validates/topic.validate';
+import * as isValid from '../../validates/isValids.validates';
 export const index = async (req:Request,res:Response):Promise<void>=>{
     type typeFilter={
         deleted:boolean,
@@ -18,13 +18,16 @@ export const index = async (req:Request,res:Response):Promise<void>=>{
     if(req.query.typeFilter){
         filter.status = req.query.typeFilter as string;
     }
-    if(req.query.sort){
-       sort.title = req.query.sort;
+    if(isValid.isValidSort(req.query.sort)){
+       sort.title = req.query.sort ;
     }
     // pagination start -----------------------------------
     let objPagination:any = {
         limiteItem:4,
         currentPage:1,   
+    }
+    if(isValid.isValidLimiteItem(req.query.limiteItem)){
+        objPagination.limiteItem=req.query.limiteItem;
     }
     const countTopic = await topicsModel.find(filter).countDocuments();
     objPagination.totalPage = Math.ceil(countTopic/objPagination.limiteItem);
@@ -34,11 +37,9 @@ export const index = async (req:Request,res:Response):Promise<void>=>{
     const topics = await topicsModel.find(filter).limit(objPagination.limiteItem).skip(objPagination.skipItem).sort(sort);
     res.render("admin/pages/topics/index",{topics:topics,objPagination:resultPagination});
 }
-
 export const create = async (req:Request,res:Response):Promise<void>=>{
     res.render("admin/pages/topics/create");
 }
-
 export const createPost = async (req:Request,res:Response):Promise<void>=>{
     const topicBody = {
         title:req.body.title,
@@ -117,9 +118,6 @@ export const editPatch = async(req:Request,res:Response):Promise<void>=>{
         const topic =  await topicsModel.findOne({_id:idTopic})
         res.render("admin/pages/topics/edit",{topic:topic})
     }
-}
-export const deleted = async (req:Request,res:Response):Promise<void>=>{
-
 }
 
 
