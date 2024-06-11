@@ -7,7 +7,7 @@ block main
       // Topbar
       include ../../partials/topbar.pug
       .container.text-center
-        h2.m-3 Thêm chủ đề
+        h2.m-3 Chỉnh sửa thông tin ca sĩ
       .container 
         form(class="form-group" method="POST" action=`/admin/singers/edit/${singer.id}?_method=PATCH` enctype="multipart/form-data")
           .mb-3

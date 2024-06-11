@@ -8,7 +8,7 @@ cloudConfig(cloudinary);
 
 const  streamUpload = (buffer:string) => {
   return new Promise((resolve, reject) => {
-      let stream = cloudinary.v2.uploader.upload_stream(
+      let stream = cloudinary.v2.uploader.upload_stream({resource_type:'auto'},
         (error, result) => {
           if (result) {
             resolve(result);
@@ -20,7 +20,7 @@ const  streamUpload = (buffer:string) => {
     streamifier.createReadStream(buffer).pipe(stream);
   });
 };
-export const upload = async (buffer:string)=>{
+export const upload = async (buffer:any)=>{
   try {
     console.log("Bắt đầu upload...");
     let result = await streamUpload(buffer);

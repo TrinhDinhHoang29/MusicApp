@@ -1,5 +1,5 @@
 
-//preview start ----------------------------------------
+//preview img start ----------------------------------------
 const uploadImages = document.querySelector("[upload-image]");
 if(uploadImages){
     const uploadImagesInput = document.querySelector("[upload-image-input]");
@@ -11,8 +11,22 @@ if(uploadImages){
         })
     }
 }
-//preview end ------------------------------------------
+//preview img end ------------------------------------------
 
+
+//preview img start ----------------------------------------
+const uploadAudio = document.querySelector("[upload-audio]");
+if(uploadAudio){
+    const uploadAudiosInput = document.querySelector("[upload-audio-input]");
+    const uploadAudioPreview = document.querySelector("[upload-audio-preview]");
+    if(uploadAudiosInput){
+        uploadAudiosInput.addEventListener("change",(e)=>{
+            const files = e.target.files[0];
+            uploadAudioPreview.src = URL.createObjectURL(files);
+        })
+    }
+}
+//preview img end ------------------------------------------
 
 //close img  start ------------------------
 const closeImage = document.querySelector("[close-image-upload]");
@@ -28,7 +42,21 @@ if(closeImage){
 }
 //close img end ---------------------------
 
-
+//close audio  start ------------------------
+const closeAudio = document.querySelector("[close-audio-upload]");
+if(closeAudio){
+    console.log(closeAudio)
+    closeAudio.addEventListener("click",()=>{
+        const uploadAudiosInput = document.querySelector("[upload-audio-input]");
+        const uploadAudioPreview = document.querySelector("[upload-audio-preview]");
+        if(uploadAudiosInput.value){
+            uploadAudiosInput.value="";
+            uploadAudioPreview.src="";
+        }
+        
+    })
+}
+//close audio end ---------------------------
 
 //update status 
 const buttonStatus = document.querySelectorAll(".button-status");
