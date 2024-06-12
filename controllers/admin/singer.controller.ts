@@ -49,10 +49,10 @@ export const createPost = async (req:Request,res:Response):Promise<void>=>{
         const singer = new singerModel(singerBody);
         await singer.save();
         req["flash"]("success","Thêm ca sỹ thành công!!!");
-        res.redirect("/admin/singers/create");
+        res.redirect("back");
     }catch(error){
         req["flash"]("error","Thêm ca sỹ thất bại!!!");
-        res.redirect("/admin/singers/create");
+        res.redirect("back");
     }
 }
 
@@ -139,12 +139,10 @@ export const editPatch = async(req:Request,res:Response):Promise<void>=>{
         await singerModel.updateOne({
             _id:idSinger
         },singerBody);
-        const singer =  await singerModel.findOne({_id:idSinger})
         req["flash"]("success","Cập nhật thành công!!!");
-        res.render("admin/pages/singers/edit",{singer:singer})
+        res.redirect("back");
     }catch(error){
         req["flash"]("error","Cập nhật thất bại!!!");
-        const singer =  await singerModel.findOne({_id:idSinger})
-        res.render("admin/pages/singers/edit",{singer:singer})
+        res.redirect("back");
     }
 }

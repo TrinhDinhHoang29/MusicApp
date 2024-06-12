@@ -9,11 +9,18 @@ export const uploadSingle= async (req:Request, res:Response, next:NextFunction):
 }
 
 export const uploadFields= async (req:Request, res:Response, next:NextFunction):Promise<void>=>{
-    if(req["files"]){   
-        const linkImage =await cloud.upload(req["files"].avatar[0].buffer);
-        req.body[req["files"].avatar[0].fieldname] = linkImage;
-        const linkAudio =await cloud.upload(req["files"].audio[0].buffer);
-        req.body[req["files"].audio[0].fieldname] = linkAudio;  
+    if(req["files"].avatar){
+        for(const avatar of req["files"].avatar){
+            const linkImage =await cloud.upload(avatar.buffer);
+            req.body[avatar.fieldname] = linkImage;
+        }
     }
+    if(req["files"].audio){
+        for(const audio of req["files"].audio){
+            const linkAudio =await cloud.upload(audio.buffer);
+            req.body[audio.fieldname] = linkAudio;
+        }
+    }
+    
     next();
 }

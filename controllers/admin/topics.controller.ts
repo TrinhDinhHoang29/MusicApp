@@ -51,11 +51,11 @@ export const createPost = async (req:Request,res:Response):Promise<void>=>{
         const topic = new topicsModel(topicBody);
         await topic.save();
         req["flash"]("success","Thêm chủ đề thành công!!!");
-        res.redirect("/admin/topics/create");
+        res.redirect("back");
     }catch(error){
         req["flash"]("error","Thêm chủ đề thất bại!!!");
-        res.redirect("/admin/topics/create");
-        console.log(error);
+        res.redirect("back");
+
     }
 }
 export const detail = async (req:Request,res:Response):Promise<void>=>{
@@ -110,13 +110,11 @@ export const editPatch = async(req:Request,res:Response):Promise<void>=>{
         await topicsModel.updateOne({
             _id:idTopic
         },topicBody);
-        const topic =  await topicsModel.findOne({_id:idTopic})
         req["flash"]("success","Cập nhật chủ đề thành công!!!");
-        res.render("admin/pages/topics/edit",{topic:topic})
+        res.redirect("back");
     }catch(error){
         req["flash"]("error","Cập nhật chủ đề thất bại!!!");
-        const topic =  await topicsModel.findOne({_id:idTopic})
-        res.render("admin/pages/topics/edit",{topic:topic})
+        res.redirect("back");
     }
 }
 
