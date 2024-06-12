@@ -58,7 +58,7 @@ block main
             th Avatar
             th Tiêu đề 
             th Tên ca sĩ
-            th Chủ đề
+            th Vị trí
             th Trạng thái 
             th Hành động
         tbody 
@@ -71,7 +71,8 @@ block main
                 img(src=song.avatar width="100px" height="100px" alt="")
               td #{song.title} 
               td #{song.fullNameSinger}             
-              td #{song.titleTopic}  
+              td 
+                input(type="number" value=song.posision input-posision=song._id name="posision" min="1") 
               td 
                 - if(song.status == "active")
                     button(data-update=`${song._id} inactive`).btn.badge.bg-success.text-light.button-status Đang hoạt động 

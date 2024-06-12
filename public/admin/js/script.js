@@ -231,3 +231,23 @@ if(typeView){
 }
 
 //end view quantity item
+
+
+// Update vi tri
+const inputPosisions = document.querySelectorAll("[input-posision]");
+
+if(inputPosisions.length>0){
+    inputPosisions.forEach(inputPosision=>{
+        inputPosision.addEventListener('change',(e)=>{
+            if(inputPosision.value>0){
+                const idSong = inputPosision.getAttribute("input-posision");
+                const page = window.location.pathname.split("/")[2];
+
+                const link = `/admin/${page}/posision/${idSong}/${inputPosision.value}`;
+                fetch(link,{method:"PATCH"});
+            }
+        })
+    })    
+}
+
+// end Update vi tri

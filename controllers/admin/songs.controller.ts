@@ -59,6 +59,7 @@ export const create = async (req:Request,res:Response):Promise<void>=>{
     res.render("admin/pages/songs/create",{singers:singers,topics:topics});
 }
 export const createPost = async (req:Request,res:Response):Promise<void>=>{
+    const countSong = await songsModel.countDocuments({deleted:false});
     const songBody = {
         title:req.body.title,
         avatar:req.body.avatar,
@@ -68,6 +69,8 @@ export const createPost = async (req:Request,res:Response):Promise<void>=>{
         lyrics:req.body.lyrics,
         audio:req.body.audio,
         status:req.body.status,
+        posision:req.body.posision?req.body.posision:countSong+1
+
     }
     try{
         const song = new songsModel(songBody);
@@ -131,6 +134,7 @@ export const editPatch = async(req:Request,res:Response):Promise<void>=>{
         lyrics:req.body.lyrics,
         audio:req.body.audio,
         status:req.body.status,
+        posision:req.body.posision
     }
     try{
         await songsModel.updateOne({

@@ -35,7 +35,10 @@ block main
             textarea.form-control(rows="2" name="description" id="description" ) !{song.description}
           .mb-3
             label.form-label(for='lyrics') Lời bài hát
-            textarea.form-control(rows="2" name="lyrics" id="lyrics") !{song.lyrics}        
+            textarea.form-control(rows="2" name="lyrics" id="lyrics") !{song.lyrics}  
+          .mb-3
+            label.form-label(for='posision') Vị trí
+            input.form-control(type='number' name="posision" id="posision" value=song.posision)      
           .mb-3 
             - if (song.status=="active")
                 .form-check-inline

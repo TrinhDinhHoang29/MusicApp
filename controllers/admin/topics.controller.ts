@@ -45,7 +45,7 @@ export const createPost = async (req:Request,res:Response):Promise<void>=>{
         title:req.body.title,
         avatar:req.body.avatar,
         description:req.body.description,
-        status:req.body.status
+        status:req.body.status,
     }
     try{
         const topic = new topicsModel(topicBody);

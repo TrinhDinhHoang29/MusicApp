@@ -7,7 +7,7 @@ block main
       // Topbar
       include ../../partials/topbar.pug
       .container.text-center
-        h2.m-3 Thêm chủ đề
+        h2.m-3 Thêm nhạc
       .container 
         form(class="form-group" method="POST" action="/admin/songs/create" enctype="multipart/form-data")
           .mb-3
@@ -28,7 +28,10 @@ block main
             textarea.form-control(rows="2" name="description" id="description")
           .mb-3
             label.form-label(for='lyrics') Lời bài hát
-            textarea.form-control(rows="2" name="lyrics" id="lyrics")         
+            textarea.form-control(rows="2" name="lyrics" id="lyrics")  
+          .mb-3
+            label.form-label(for='posision') Vị trí
+            input.form-control(type='number' name="posision" id="posision")       
           .mb-3 
             .form-check-inline
               label(for="active" class="form-check-label")
