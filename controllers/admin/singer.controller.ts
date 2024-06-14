@@ -58,8 +58,13 @@ export const createPost = async (req:Request,res:Response):Promise<void>=>{
 
 export const detail = async (req:Request,res:Response):Promise<void>=>{
     const idSinger = req.params.id;
-    const singer = await singerModel.findOne({_id:idSinger});
-    res.render("admin/pages/singers/detail",{singer:singer})
+    
+    try{
+        const singer = await singerModel.findOne({_id:idSinger});
+        res.render("admin/pages/singers/detail",{singer:singer})
+    }catch(error){
+        res.redirect("back");
+    }
 }
 export const actionUpdate = async(req:Request,res:Response):Promise<void>=>{
     const idSinger = req.params.id;
@@ -124,8 +129,13 @@ export const changeMulti = async (req:Request,res:Response):Promise<void>=>{
 
 export const edit = async (req:Request,res:Response):Promise<void>=>{
     const idSinger = req.params.id;
-    const singer = await singerModel.findOne({_id:idSinger});
-    res.render("admin/pages/singers/edit",{singer:singer})
+    
+    try{
+        const singer = await singerModel.findOne({_id:idSinger});
+        res.render("admin/pages/singers/edit",{singer:singer})
+    }catch(error){
+        res.redirect("back");
+    }
 
 }
 export const editPatch = async(req:Request,res:Response):Promise<void>=>{

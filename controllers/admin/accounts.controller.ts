@@ -1,16 +1,15 @@
 import express,{Express, Request,Response} from 'express';
-
-import topicsModel from '../../models/topic.model';
+import accountModel from '../../models/account.model';
+import * as isValid from "../../validates/isValids.validates";
 import paginationHelper from '../../helpers/pagination';
-import * as validateTopic from '../../validates/topic.validate';
-import * as isValid from '../../validates/isValids.validates';
+import md5 from 'md5'
 export const index = async (req:Request,res:Response):Promise<void>=>{
     type typeFilter={
         deleted:boolean,
         status?:string,
     }
     let sort:any = {
-        title:"asc"
+        fullName:"asc"
     }
     let filter:typeFilter = {
         deleted:false
@@ -19,7 +18,7 @@ export const index = async (req:Request,res:Response):Promise<void>=>{
         filter.status = req.query.typeFilter as string;
     }
     if(isValid.isValidSort(req.query.sort)){
-       sort.title = req.query.sort ;
+       sort.fullName = req.query.sort ;
     }
     // pagination start -----------------------------------
     let objPagination:any = {
@@ -29,59 +28,94 @@ export const index = async (req:Request,res:Response):Promise<void>=>{
     if(isValid.isValidLimiteItem(req.query.limiteItem)){
         objPagination.limiteItem=req.query.limiteItem;
     }
-    const countTopic = await topicsModel.find(filter).countDocuments();
-    objPagination.totalPage = Math.ceil(countTopic/objPagination.limiteItem);
+    const countAccount = await accountModel.find(filter).countDocuments();
+    objPagination.totalPage = Math.ceil(countAccount/objPagination.limiteItem);
     const resultPagination = paginationHelper(objPagination,req.query);
 
     // pagination end ---------------------------------------
-    const topics = await topicsModel.find(filter).limit(objPagination.limiteItem).skip(objPagination.skipItem).sort(sort);
-    res.render("admin/pages/topics/index",{topics:topics,objPagination:resultPagination});
+
+    const accounts = await accountModel.find(filter).limit(objPagination.limiteItem).skip(objPagination.skipItem).sort(sort).lean()
+    .select("-password -token");
+    
+
+
+
+    res.render("admin/pages/accounts/index",{accounts:accounts,objPagination:resultPagination});
 }
 export const create = async (req:Request,res:Response):Promise<void>=>{
-    res.render("admin/pages/topics/create");
+
+    res.render("admin/pages/accounts/create",{});
 }
 export const createPost = async (req:Request,res:Response):Promise<void>=>{
-    const topicBody = {
-        title:req.body.title,
+    const accountBody = {
+        fullName:req.body.fullName,
+        email:req.body.email,
+        password:md5(req.body.password),
+        roleId:"",
         avatar:req.body.avatar,
-        description:req.body.description,
         status:req.body.status,
+
     }
     try{
-        const topic = new topicsModel(topicBody);
-        await topic.save();
-        req["flash"]("success","Thêm chủ đề thành công!!!");
+        const account = new accountModel(accountBody);
+        await account.save();
+        req["flash"]("success","Thêm thành công!!!");
         res.redirect("back");
     }catch(error){
-        req["flash"]("error","Thêm chủ đề thất bại!!!");
+        req["flash"]("error","Thêm thất bại!!!");
         res.redirect("back");
-
     }
 }
 export const detail = async (req:Request,res:Response):Promise<void>=>{
-    const idTopic = req.params.id;
-    
+    const idAccount = req.params.id;
     try{
-        const topic = await topicsModel.findOne({_id:idTopic});
-         res.render("admin/pages/topics/detail",{topic:topic})
+        const account = await accountModel.findOne({_id:idAccount});
+        res.render("admin/pages/accounts/detail",{account:account})
     }catch(error){
         res.redirect("back");
     }
+    
 }
 export const edit = async (req:Request,res:Response):Promise<void>=>{
-    const idTopic = req.params.id;
-    
+    const idAccount = req.params.id;
     try{
-        const topic = await topicsModel.findOne({_id:idTopic});
-        res.render("admin/pages/topics/edit",{topic:topic})
+        const account = await accountModel.findOne({_id:idAccount}).select("-password -token");
+        res.render("admin/pages/accounts/edit",{account:account})
     }catch(error){
         res.redirect("back");
     }
+    
 
 }
+export const editPatch = async(req:Request,res:Response):Promise<void>=>{
+    const idAccount = req.params.id; 
+    const accountBody = {
+        fullName:req.body.fullName,
+        email:req.body.email,
+        roleId:"",
+        avatar:req.body.avatar,
+        status:req.body.status,
+
+    }
+    if(req.body.password){
+        accountBody["password"] = md5(req.body.password);
+    }
+    try{
+        await accountModel.updateOne({
+            _id:idAccount
+        },accountBody);
+        req["flash"]("success","Cập nhật thành công!!!");
+      
+        res.redirect("back");
+    }catch(error){
+        req["flash"]("error","Cập nhật thất bại!!!");
+        res.redirect("back");
+    }
+}
+
 
 export const actionUpdate = async(req:Request,res:Response):Promise<void>=>{
-    const idTopic = req.params.id;
+    const idAccount = req.params.id;
     const actionUpdate = req.params.actionUpdate;
     let valueUpdate:(string|boolean) = req.params.status;
 
@@ -89,8 +123,8 @@ export const actionUpdate = async(req:Request,res:Response):Promise<void>=>{
         valueUpdate=true;
 
     try{
-        await topicsModel.updateOne({
-            _id:idTopic
+        await accountModel.updateOne({
+            _id:idAccount
         },{
             [actionUpdate]:valueUpdate
         })
@@ -104,30 +138,7 @@ export const actionUpdate = async(req:Request,res:Response):Promise<void>=>{
             message:"Cập nhật thất bại !!"
         })
     }
-    
-    
 }
-
-export const editPatch = async(req:Request,res:Response):Promise<void>=>{
-    const idTopic = req.params.id;
-    const topicBody = {
-        title:req.body.title,
-        avatar:req.body.avatar,
-        description:req.body.description,
-        status:req.body.status
-    } 
-    try{
-        await topicsModel.updateOne({
-            _id:idTopic
-        },topicBody);
-        req["flash"]("success","Cập nhật chủ đề thành công!!!");
-        res.redirect("back");
-    }catch(error){
-        req["flash"]("error","Cập nhật chủ đề thất bại!!!");
-        res.redirect("back");
-    }
-}
-
 
 export const changeMulti = async (req:Request,res:Response):Promise<void>=>{
     const type= req.body.type;
@@ -135,32 +146,31 @@ export const changeMulti = async (req:Request,res:Response):Promise<void>=>{
 
         switch(type){
             case "active":
-                await topicsModel.updateMany({
+                await accountModel.updateMany({
                     _id:value
                 },{
                     status:"active"
                 });
                 break;
             case "inactive":
-                await topicsModel.updateMany({
+                await accountModel.updateMany({
                     _id:value
                 },{
                     status:"inactive"
                 })
                 break;
             case "delete-all":
-                await topicsModel.updateMany({
+                await accountModel.updateMany({
                     _id:value
                 },{
                     deleted:true
                 })
                 break;
             default:
-                req["flash"]("error","Cập nhật chủ đề thất bại!!!");
+                req["flash"]("error","Cập nhật thất bại!!!");
                 res.redirect("back");
                 return;
             }
-    req["flash"]("success","Cập nhật chủ đề thành công!!!");
+    req["flash"]("success","Cập nhật thành công!!!");
     res.redirect("back");
 }
-

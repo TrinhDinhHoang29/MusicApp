@@ -1,4 +1,30 @@
 extends ../../layouts/default.pug
 block main
-    .container
-        h1 Trang chủ 
+    .main-content2
+        .title-first.my-3 
+            h5 Chủ đề nổi bật
+        ul.banner-topic.d-flex.my-3
+            each topic in topics
+                li
+                    a(href=`/topics/${topic._id}`)
+                        img(src=topic.avatar width="80%"  alt="")
+                    .title-topic #{topic.title}                
+        .title-second.my-3 
+            h5 Mới phát hành
+        .product-list.p-0
+            each song,index in songs
+                .product-item.d-flex 
+                    .inner-avatar-music.mx-3
+                        a(href=`/songs/${song._id}`) 
+                            img(src=song.avatar width="100px" height="100px" alt="")
+                    .inner-body-music
+                        .inner-name-music #{song.title}
+                        .inner-singer-music #{song.fullNameSinger}
+                    a(class="love-music") 
+                        i(class="fa-solid fa-heart")
+                    a(class="like-music") 
+                        i(class="fa-solid fa-thumbs-up")
+            
+                   
+                         
+
