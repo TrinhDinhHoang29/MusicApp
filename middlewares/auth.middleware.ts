@@ -8,7 +8,6 @@ export  const checkToken = async (req:Request,res:Response,next:NextFunction):Pr
         return;
     }
     const account = await accountModel.findOne({deleted:false,token:req.cookies.token}).select("-password");   
-    console.log(account);
     if(!account){
         res.redirect("/admin/auth/login");
         return;

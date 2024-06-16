@@ -8,7 +8,7 @@ block main
       include ../../partials/topbar.pug
 
       .container.text-center
-        h2.m-3 Quản lý vai trò
+        h2.m-3 Quản lý chủ đề 
       .card.my-3
         h5.card-header Bộ lọc và sắp xếp
         .card-body
@@ -37,7 +37,7 @@ block main
         .card-body
             .row
                 .col-5
-                  form(action="/admin/singers/change-multi?_method=PATCH" method="post" form-changeMulti) 
+                  form(action="/admin/roles/change-multi?_method=PATCH" method="post" form-changeMulti) 
                     div.input-group
                       select(name="type" class="form-select form-control py-1 text-center" type-update aria-label=".form-select-lg example")
                         option(value="" selected disabled) --- Chỉnh sửa nhiều chủ đề ---
@@ -47,36 +47,35 @@ block main
                       input(type="text" input-changeMulti name="value" class="d-none") 
                       button(class="btn btn-primary btn-changeMulti input-group-append") Chấp nhận
                 .col-4.text-right
-                  a(href="/admin/singers/create" class="btn btn-outline-success") + Thêm chủ đề
+                  a(href="/admin/roles/create" class="btn btn-outline-success") + Thêm chủ đề
 
       table(class="table table-hover m-3 text-center")
         thead 
           tr 
             th 
-              input(type="checkbox" name="" sum-checkbox = singers.length)
+              input(type="checkbox" name="" sum-checkbox = roles.length)
             th STT
-            th Avatar
             th Tiêu đề 
+            th Người tạo
             th Trạng thái 
             th Hành động
         tbody 
-          each singer,index in singers
+          each role,index in roles
             tr
               td 
-                input(type="checkbox", name="change-multi" change-multi value=singer.id)
+                input(type="checkbox", name="change-multi" change-multi value=role._id)
               td #{index+1}
+              td #{role.title} 
+              td #{role.fullNameCreater}         
               td 
-                img(src=singer.avatar width="100px" height="100px" alt="")
-              td #{singer.fullName} 
-              td 
-                - if(singer.status == "active")
-                    button(data-update=`${singer.id} inactive`).btn.badge.bg-success.text-light.button-status Đang hoạt động 
+                - if(role.status == "active")
+                    button(data-update=`${role._id} inactive`).btn.badge.bg-success.text-light.button-status Đang hoạt động 
                 - else
-                    button(data-update=`${singer.id} active`).btn.button-status.badge.bg-danger.text-light Dừng hoạt động
+                    button(data-update=`${role._id} active`).btn.button-status.badge.bg-danger.text-light Dừng hoạt động
               td 
-                a(href=`/admin/singers/detail/${singer.id}` class="btn btn-secondary mx-1") Chi tiết
-                a(href=`/admin/singers/edit/${singer.id}` class="btn btn-warning mx-1") Sửa
-                button(href="" class="btn btn-danger mx-1 btn-delete" data-update=singer.id) Xoá 
+                a(href=`/admin/roles/detail/${role._id}` class="btn btn-secondary mx-1") Chi tiết
+                a(href=`/admin/roles/edit/${role._id}` class="btn btn-warning mx-1") Sửa
+                button(href="" class="btn btn-danger mx-1 btn-delete" data-update=role._id) Xoá 
       .container.text-center
         nav(aria-label="Page navigation example")
           ul(class="pagination")
@@ -99,5 +98,5 @@ block main
   a#scrollToTopButton.scroll-to-top.rounded(href='#page-top')
     i.fas.fa-angle-up
 
-
+  
 

@@ -9,7 +9,7 @@ block main
       .container.text-center
         h2.m-3 Thêm vai trò
       .container 
-        form(class="form-group" method="POST" action="/admin/roles/create" enctype="multipart/form-data")
+        form(class="form-group" method="POST" action="/admin/roles/create")
           .mb-3
             label.form-label(for='title') Tên vai trò
             input.form-control(type='text' name="title" id="title")
@@ -25,7 +25,6 @@ block main
               label(for="inactive" class="form-check-label") 
                 input(type="radio" class="form-check-input" id="inactive" name="status" value="inactive") 
                 span Dừng hoạt động 
-            
           button.btn.btn-primary(type='submit') Submit
       
       // Footer

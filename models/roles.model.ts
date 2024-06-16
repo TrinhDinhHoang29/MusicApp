@@ -3,6 +3,7 @@ import mongoose,{Schema} from "mongoose";
 const rolesSchema:Schema = new mongoose.Schema({
     title:String,
     description:String,
+    status:String,
     permissions:{
         type:Array,
         default:[]
@@ -10,10 +11,6 @@ const rolesSchema:Schema = new mongoose.Schema({
     deleted:{
         type:Boolean,
         default:false
-    },
-    deletedBy:{
-        id:String,
-        deleteAt:Date
     },
     createdBy:{
         id:String,
