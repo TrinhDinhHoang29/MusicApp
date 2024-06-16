@@ -1,4 +1,4 @@
-import express,{Express, Request,Response} from 'express';
+import express,{Express, Request,RequestHandler,Response} from 'express';
 
 import songsModel from '../../models/song.model';
 import singersModel from '../../models/singer.model';

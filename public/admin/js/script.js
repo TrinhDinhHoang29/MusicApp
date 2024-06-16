@@ -251,3 +251,30 @@ if(inputPosisions.length>0){
 }
 
 // end Update vi tri
+
+
+
+//send otp 
+const sendOtp = document.querySelector("[send-otp]");
+if(sendOtp){
+    sendOtp.addEventListener("click",()=>{
+        const option = {
+            method:"POST"
+        }
+        fetch("/admin/otps/create",option)
+        .then(res=>res.json())
+        .then(data=>{
+            const mess = document.querySelector("[message-otp]")
+            const label = mess.querySelector("label");
+            if(data.code==200){
+                label.textContent = "Đã gửi otp thành công";
+            }else{
+                label.textContent = "Không gửi otp được";
+
+            }
+        })
+    })
+}
+
+
+//end send otp

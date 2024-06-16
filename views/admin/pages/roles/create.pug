@@ -7,11 +7,11 @@ block main
       // Topbar
       include ../../partials/topbar.pug
       .container.text-center
-        h2.m-3 Thêm chủ đề
+        h2.m-3 Thêm vai trò
       .container 
-        form(class="form-group" method="POST" action="/admin/topics/create" enctype="multipart/form-data")
+        form(class="form-group" method="POST" action="/admin/roles/create" enctype="multipart/form-data")
           .mb-3
-            label.form-label(for='title') Tiêu đề 
+            label.form-label(for='title') Tên vai trò
             input.form-control(type='text' name="title" id="title")
           .mb-3
             label.form-label(for='description') Mô tả
@@ -25,12 +25,7 @@ block main
               label(for="inactive" class="form-check-label") 
                 input(type="radio" class="form-check-input" id="inactive" name="status" value="inactive") 
                 span Dừng hoạt động 
-          div(class="mb-3" upload-image) 
-            label(class="form-label d-block") Hình ảnh
-            input(type="file" accept="image/*" class="form-file d-block" name="avatar" value="" upload-image-input)
-            div
-                div(class = "" close-image-upload) x 
-                img(src="#"  alt="" upload-image-preview width="200px" class="d-inline" max-height="200px")   
+            
           button.btn.btn-primary(type='submit') Submit
       
       // Footer
@@ -43,4 +38,4 @@ block main
   a#scrollToTopButton.scroll-to-top.rounded(href='#page-top')
     i.fas.fa-angle-up
 
-  
+ 

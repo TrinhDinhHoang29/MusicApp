@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/login",authController.login)
 router.patch("/login",validate.loginValid,authController.loginPost);
-
+router.get("/logout",authController.logOut);
 export default router;
 
 

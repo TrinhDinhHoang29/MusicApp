@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import slug from 'mongoose-slug-updater';
-import randomHelper from "../helpers/random.helper";
+import random from 'random-token';
+const randomToken = random.create('abcdefghijklmnopqrstuvwxzyABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
 mongoose.plugin(slug);
 const accountSchema:Schema = new  mongoose.Schema({
     fullName:String,
@@ -11,7 +12,7 @@ const accountSchema:Schema = new  mongoose.Schema({
     avatar:String,
     token:{
         type:String,
-        default:randomHelper(20)
+        default:randomToken(20)
     },
     deleted:{
         type:Boolean,

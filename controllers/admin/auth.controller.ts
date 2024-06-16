@@ -11,7 +11,7 @@ export const loginPost = async (req:Request,res:Response):Promise<void>=>{
         res.redirect("back");
         return;
     }
-    if(account.status == "unactive"){
+    if(account.status === "inactive"){
         req["flash"]("error","Tài khoản đã bị khoá !!");
         res.redirect("back");
         return;
@@ -27,4 +27,5 @@ export const loginPost = async (req:Request,res:Response):Promise<void>=>{
 }
 export const logOut = (req:Request,res:Response)=>{
     res.clearCookie("token");
+    res.redirect("/admin/auth/login");
 }

@@ -106,11 +106,11 @@ nav.navbar.navbar-expand.navbar-light.bg-white.topbar.mb-4.static-top.shadow
     // Nav Item - User Information
     li.nav-item.dropdown.no-arrow
       a#userDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-        span.mr-2.d-none.d-lg-inline.text-gray-600.small Douglas McGee
-        img.img-profile.rounded-circle(src='img/undraw_profile.svg')
+        span.mr-2.d-none.d-lg-inline.text-gray-600.small #{account.fullName}
+        img.img-profile.rounded-circle(src=account.avatar)
       // Dropdown - User Information
       .dropdown-menu.dropdown-menu-right.shadow.animated--grow-in(aria-labelledby='userDropdown')
-        a.dropdown-item(href='#')
+        a.dropdown-item(href='/admin/profile')
           i.fas.fa-user.fa-sm.fa-fw.mr-2.text-gray-400
           |                                     Profile
         a.dropdown-item(href='#')

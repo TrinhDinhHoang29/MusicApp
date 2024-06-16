@@ -25,11 +25,9 @@ export const valiEdit = async(req:Request,res:Response,next:NextFunction):Promis
     let existsEmail:boolean = false;
     const id = req.params.id;
     const accountEmail = await accountModel.findOne({_id:id,email:email});
-    console.log(accountEmail);
     if(!accountEmail){
         existsEmail = await isEmail(email);
     }
-    console.log(existsEmail);
     if(!fullName.trim()||!email.trim()||!status.trim()||existsEmail){
         req["flash"]("error","Sửa thất bại!!!");
         res.redirect("back");
