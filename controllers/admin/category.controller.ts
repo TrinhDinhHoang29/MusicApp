@@ -1,9 +1,6 @@
 import express,{Express, Request,Response} from 'express';
-
-import topicsModel from '../../models/topic.model';
+import * as isValid from "../../validates/isValids.validates";
 import paginationHelper from '../../helpers/pagination';
-import * as validateTopic from '../../validates/topic.validate';
-import * as isValid from '../../validates/isValids.validates';
 import categorysModel from '../../models/category.model';
 export const index = async (req:Request,res:Response):Promise<void>=>{
     type typeFilter={
@@ -20,7 +17,7 @@ export const index = async (req:Request,res:Response):Promise<void>=>{
         filter.status = req.query.typeFilter as string;
     }
     if(isValid.isValidSort(req.query.sort)){
-       sort.title = req.query.sort ;
+       sort.fullName = req.query.sort ;
     }
     // pagination start -----------------------------------
     let objPagination:any = {
@@ -30,62 +27,80 @@ export const index = async (req:Request,res:Response):Promise<void>=>{
     if(isValid.isValidLimiteItem(req.query.limiteItem)){
         objPagination.limiteItem=req.query.limiteItem;
     }
-    const countTopic = await topicsModel.find(filter).countDocuments();
-    objPagination.totalPage = Math.ceil(countTopic/objPagination.limiteItem);
+    const countcategory = await categorysModel.find(filter).countDocuments();
+    objPagination.totalPage = Math.ceil(countcategory/objPagination.limiteItem);
     const resultPagination = paginationHelper(objPagination,req.query);
 
     // pagination end ---------------------------------------
-    const topics = await topicsModel.find(filter).limit(objPagination.limiteItem).skip(objPagination.skipItem).sort(sort);
-    res.render("admin/pages/topics/index",{topics:topics,objPagination:resultPagination});
+
+    const categorys = await categorysModel.find(filter).limit(objPagination.limiteItem).skip(objPagination.skipItem).sort(sort).lean()
+    res.render("admin/pages/categorys/index",{categorys:categorys,objPagination:resultPagination});
 }
 export const create = async (req:Request,res:Response):Promise<void>=>{
-    const categorys = await categorysModel.find();
-    res.render("admin/pages/topics/create",{categorys:categorys});
+
+    res.render("admin/pages/categorys/create",{});
 }
 export const createPost = async (req:Request,res:Response):Promise<void>=>{
-    const topicBody = {
+    const categoryBody = {
         title:req.body.title,
-        avatar:req.body.avatar,
         description:req.body.description,
         status:req.body.status,
-        categoryId:req.body.categoryId,
     }
     try{
-        const topic = new topicsModel(topicBody);
-        await topic.save();
-        req["flash"]("success","Thêm chủ đề thành công!!!");
+        const category = new categorysModel(categoryBody);
+        await category.save();
+        req["flash"]("success","Thêm thành công!!!");
         res.redirect("back");
     }catch(error){
-        req["flash"]("error","Thêm chủ đề thất bại!!!");
+        req["flash"]("error","Thêm thất bại!!!");
         res.redirect("back");
-
     }
+
 }
 export const detail = async (req:Request,res:Response):Promise<void>=>{
-    const idTopic = req.params.id;
-    
+    const idCategory = req.params.id;
     try{
-        const topic = await topicsModel.findOne({_id:idTopic});
-         res.render("admin/pages/topics/detail",{topic:topic})
+        const category = await categorysModel.findOne({_id:idCategory});
+        res.render("admin/pages/categorys/detail",{category:category})
     }catch(error){
         res.redirect("back");
     }
+    
 }
 export const edit = async (req:Request,res:Response):Promise<void>=>{
-    const idTopic = req.params.id;
-    
+    const idCategory = req.params.id;
     try{
-        const categorys = await categorysModel.find({});
-        const topic = await topicsModel.findOne({_id:idTopic});
-        res.render("admin/pages/topics/edit",{topic:topic,categorys:categorys})
+        const category = await categorysModel.findOne({_id:idCategory});
+        res.render("admin/pages/categorys/edit",{category:category,})
     }catch(error){
         res.redirect("back");
     }
 
 }
+export const editPatch = async(req:Request,res:Response):Promise<void>=>{
+    const idCategory = req.params.id; 
+    const categoryBody = {
+        title:req.body.title,
+        status:req.body.status,
+        description:req.body.description
+
+    }
+    try{
+        await categorysModel.updateOne({
+            _id:idCategory
+        },categoryBody);
+        req["flash"]("success","Cập nhật thành công!!!");
+      
+        res.redirect("back");
+    }catch(error){
+        req["flash"]("error","Cập nhật thất bại!!!"+error);
+        res.redirect("back");
+    }
+}
+
 
 export const actionUpdate = async(req:Request,res:Response):Promise<void>=>{
-    const idTopic = req.params.id;
+    const idCategory = req.params.id;
     const actionUpdate = req.params.actionUpdate;
     let valueUpdate:(string|boolean) = req.params.status;
 
@@ -93,8 +108,8 @@ export const actionUpdate = async(req:Request,res:Response):Promise<void>=>{
         valueUpdate=true;
 
     try{
-        await topicsModel.updateOne({
-            _id:idTopic
+        await categorysModel.updateOne({
+            _id:idCategory
         },{
             [actionUpdate]:valueUpdate
         })
@@ -108,31 +123,7 @@ export const actionUpdate = async(req:Request,res:Response):Promise<void>=>{
             message:"Cập nhật thất bại !!"
         })
     }
-    
-    
 }
-
-export const editPatch = async(req:Request,res:Response):Promise<void>=>{
-    const idTopic = req.params.id;
-    const topicBody = {
-        title:req.body.title,
-        avatar:req.body.avatar,
-        description:req.body.description,
-        status:req.body.status,
-        categoryId:req.body.categoryId
-    } 
-    try{
-        await topicsModel.updateOne({
-            _id:idTopic
-        },topicBody);
-        req["flash"]("success","Cập nhật chủ đề thành công!!!");
-        res.redirect("back");
-    }catch(error){
-        req["flash"]("error","Cập nhật chủ đề thất bại!!!");
-        res.redirect("back");
-    }
-}
-
 
 export const changeMulti = async (req:Request,res:Response):Promise<void>=>{
     const type= req.body.type;
@@ -140,32 +131,31 @@ export const changeMulti = async (req:Request,res:Response):Promise<void>=>{
 
         switch(type){
             case "active":
-                await topicsModel.updateMany({
+                await categorysModel.updateMany({
                     _id:value
                 },{
                     status:"active"
                 });
                 break;
             case "inactive":
-                await topicsModel.updateMany({
+                await categorysModel.updateMany({
                     _id:value
                 },{
                     status:"inactive"
                 })
                 break;
             case "delete-all":
-                await topicsModel.updateMany({
+                await categorysModel.updateMany({
                     _id:value
                 },{
                     deleted:true
                 })
                 break;
             default:
-                req["flash"]("error","Cập nhật chủ đề thất bại!!!");
+                req["flash"]("error","Cập nhật thất bại!!!");
                 res.redirect("back");
                 return;
             }
-    req["flash"]("success","Cập nhật chủ đề thành công!!!");
+    req["flash"]("success","Cập nhật thành công!!!");
     res.redirect("back");
 }
-

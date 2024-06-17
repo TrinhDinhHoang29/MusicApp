@@ -1,12 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 import slug from 'mongoose-slug-updater';
 mongoose.plugin(slug);
-
-const topicSchema:Schema = new  mongoose.Schema({
+const categorySchema:Schema = new  mongoose.Schema({
     title:String,
-    avatar:String,
     description:String,
-    categoryId:String,
     status:String,
     slug:{
         type:String,
@@ -22,5 +19,5 @@ const topicSchema:Schema = new  mongoose.Schema({
 },{
     timestamps:true
 });
-const Topics = mongoose.model("Topics",topicSchema,"topics");
-export default Topics;
+const categorys = mongoose.model("categorys",categorySchema,"categorys");
+export default categorys;

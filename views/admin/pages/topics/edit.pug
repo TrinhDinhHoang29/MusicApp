@@ -16,7 +16,16 @@ block main
               input.form-control(type='text' name="title" id="title" value=topic.title)
             .mb-3
               label.form-label(for='description') Mô tả
-              textarea.form-control(rows="2" name="description" id="description" ) #{topic.description} 
+              textarea.form-control(rows="2" name="description" id="description" ) #{topic.description}
+            .mb-3
+              label.form-label(for='categoryId') Thể loại
+              select(name="categoryId" class="form-control text-center") 
+                option(value="" disabled  name="") -- Vui lòng chọn chủ đề --
+                each category in categorys 
+                  - if (category._id = topic.categoryId)
+                    option(value=category._id selected name="") #{category.title} 
+                  - else
+                    option(value=category._id name="") #{category.title} 
             .mb-3
               - if (topic.status === "active") 
                   .form-check-inline

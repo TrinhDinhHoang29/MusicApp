@@ -9,7 +9,7 @@ import * as authMiddleware from '../../middlewares/auth.middleware';
 import profile from './profile.router';
 import roles from './roles.router';
 import otps from './otp.router';
-
+import categorys from './category.router';
 
 export default (app:Express)=>{
     app.use("/admin/home",authMiddleware.checkToken,homeRouter);
@@ -21,6 +21,8 @@ export default (app:Express)=>{
     app.use("/admin/profile",authMiddleware.checkToken,profile);
     app.use("/admin/roles",authMiddleware.checkToken,roles);
     app.use("/admin/otps",authMiddleware.checkToken,otps);
+    app.use("/admin/categorys",authMiddleware.checkToken,categorys);
+
 
 
 
