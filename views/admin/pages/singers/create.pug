@@ -8,27 +8,28 @@ block main
       include ../../partials/topbar.pug
       .container.text-center
         h2.m-3 Thêm ca sĩ
-      .container 
-        form(class="form-group" method="POST" action="/admin/singers/create" enctype="multipart/form-data")
-          .mb-3
-            label.form-label(for='fullName') Họ và tên
-            input.form-control(type='text' name="fullName" id="fullName")
-          .mb-3 
-            .form-check-inline
-              label(for="active" class="form-check-label")
-                input(type="radio" class="form-check-input" id="active" name="status" value="active") 
-                span Hoạt động
-            .form-check-inline
-              label(for="inactive" class="form-check-label") 
-                input(type="radio" class="form-check-input" id="inactive" name="status" value="inactive") 
-                span Dừng hoạt động 
-          div(class="mb-3" upload-image) 
-            label(class="form-label d-block") Hình ảnh
-            input(type="file" accept="image/*" class="form-file d-block" name="avatar" value="" upload-image-input)
-            div
-                div(class = "" close-image-upload) x 
-                img(src="#"  alt="" upload-image-preview width="200px" class="d-inline" max-height="200px")   
-          button.btn.btn-primary(type='submit') Submit
+      - if (role.permissions.includes("role-singer-add"))
+        .container 
+          form(class="form-group" method="POST" action="/admin/singers/create" enctype="multipart/form-data")
+            .mb-3
+              label.form-label(for='fullName') Họ và tên
+              input.form-control(type='text' name="fullName" id="fullName")
+            .mb-3 
+              .form-check-inline
+                label(for="active" class="form-check-label")
+                  input(type="radio" class="form-check-input" id="active" name="status" value="active") 
+                  span Hoạt động
+              .form-check-inline
+                label(for="inactive" class="form-check-label") 
+                  input(type="radio" class="form-check-input" id="inactive" name="status" value="inactive") 
+                  span Dừng hoạt động 
+            div(class="mb-3" upload-image) 
+              label(class="form-label d-block") Hình ảnh
+              input(type="file" accept="image/*" class="form-file d-block" name="avatar" value="" upload-image-input)
+              div
+                  div(class = "" close-image-upload) x 
+                  img(src="#"  alt="" upload-image-preview width="200px" class="d-inline" max-height="200px")   
+            button.btn.btn-primary(type='submit') Submit
       
       // Footer
       footer.sticky-footer.bg-white

@@ -8,34 +8,35 @@ block main
       include ../../partials/topbar.pug
       .container.text-center
         h2.m-3 Thêm vai trò
-      .container 
-        form(class="form-group" method="POST" action=`/admin/roles/edit/${role._id}?_method=PATCH`)
-          .mb-3
-            label.form-label(for='title') Tên vai trò
-            input.form-control(type='text' name="title" id="title" value=role.title)
-          .mb-3
-            label.form-label(for='description') Mô tả
-            textarea.form-control(rows="2" name="description" id="description") !{role.description}
-          .mb-3 
-            - if (role.status=="active")
-                .form-check-inline
-                    label(for="active" class="form-check-label")
-                        input(type="radio" class="form-check-input" id="active" name="status" checked value="active") 
-                        span Hoạt động
-                .form-check-inline
-                    label(for="inactive" class="form-check-label") 
-                        input(type="radio" class="form-check-input" id="inactive" name="status" value="inactive") 
-                        span Dừng hoạt động 
-            - else
-                .form-check-inline
-                    label(for="active" class="form-check-label")
-                        input(type="radio" class="form-check-input" id="active" name="status"  value="active") 
-                        span Hoạt động
-                .form-check-inline
-                    label(for="inactive" class="form-check-label") 
-                        input(type="radio" class="form-check-input" id="inactive" name="status" checked value="inactive") 
-                        span Dừng hoạt động 
-          button.btn.btn-primary(type='submit') Submit
+      - if (role.permissions.includes("role-role-add"))
+        .container 
+          form(class="form-group" method="POST" action=`/admin/roles/edit/${roleEdit._id}?_method=PATCH`)
+            .mb-3
+              label.form-label(for='title') Tên vai trò
+              input.form-control(type='text' name="title" id="title" value=roleEdit.title)
+            .mb-3
+              label.form-label(for='description') Mô tả
+              textarea.form-control(rows="2" name="description" id="description") !{roleEdit.description}
+            .mb-3 
+              - if (roleEdit.status=="active")
+                  .form-check-inline
+                      label(for="active" class="form-check-label")
+                          input(type="radio" class="form-check-input" id="active" name="status" checked value="active") 
+                          span Hoạt động
+                  .form-check-inline
+                      label(for="inactive" class="form-check-label") 
+                          input(type="radio" class="form-check-input" id="inactive" name="status" value="inactive") 
+                          span Dừng hoạt động 
+              - else
+                  .form-check-inline
+                      label(for="active" class="form-check-label")
+                          input(type="radio" class="form-check-input" id="active" name="status"  value="active") 
+                          span Hoạt động
+                  .form-check-inline
+                      label(for="inactive" class="form-check-label") 
+                          input(type="radio" class="form-check-input" id="inactive" name="status" checked value="inactive") 
+                          span Dừng hoạt động 
+            button.btn.btn-primary(type='submit') Submit
       
       // Footer
       footer.sticky-footer.bg-white

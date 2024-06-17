@@ -37,17 +37,19 @@ block main
         .card-body
             .row
                 .col-5
-                  form(action="/admin/roles/change-multi?_method=PATCH" method="post" form-changeMulti) 
-                    div.input-group
-                      select(name="type" class="form-select form-control py-1 text-center" type-update aria-label=".form-select-lg example")
-                        option(value="" selected disabled) --- Chỉnh sửa nhiều chủ đề ---
-                        option(value="active") Hoạt động
-                        option(value="inactive") Dừng hoạt động 
-                        option(value="delete-all") Xoá
-                      input(type="text" input-changeMulti name="value" class="d-none") 
-                      button(class="btn btn-primary btn-changeMulti input-group-append") Chấp nhận
+                  - if (role.permissions.includes("role-role-edit"))
+                    form(action="/admin/roles/change-multi?_method=PATCH" method="post" form-changeMulti) 
+                      div.input-group
+                        select(name="type" class="form-select form-control py-1 text-center" type-update aria-label=".form-select-lg example")
+                          option(value="" selected disabled) --- Chỉnh sửa nhiều chủ đề ---
+                          option(value="active") Hoạt động
+                          option(value="inactive") Dừng hoạt động 
+                          option(value="delete-all") Xoá
+                        input(type="text" input-changeMulti name="value" class="d-none") 
+                        button(class="btn btn-primary btn-changeMulti input-group-append") Chấp nhận
                 .col-4.text-right
-                  a(href="/admin/roles/create" class="btn btn-outline-success") + Thêm chủ đề
+                  - if (role.permissions.includes("role-role-add"))
+                    a(href="/admin/roles/create" class="btn btn-outline-success") + Thêm chủ đề
 
       table(class="table table-hover m-3 text-center")
         thead 
@@ -60,22 +62,30 @@ block main
             th Trạng thái 
             th Hành động
         tbody 
-          each role,index in roles
+          each item,index in roles
             tr
               td 
-                input(type="checkbox", name="change-multi" change-multi value=role._id)
+                input(type="checkbox", name="change-multi" change-multi value=item._id)
               td #{index+1}
-              td #{role.title} 
-              td #{role.fullNameCreater}         
+              td #{item.title} 
+              td #{item.fullNameCreater}         
               td 
-                - if(role.status == "active")
+                - if (role.permissions.includes("role-role-edit"))
+                  - if(role.status === "active")
                     button(data-update=`${role._id} inactive`).btn.badge.bg-success.text-light.button-status Đang hoạt động 
-                - else
+                  - else
                     button(data-update=`${role._id} active`).btn.button-status.badge.bg-danger.text-light Dừng hoạt động
-              td 
-                a(href=`/admin/roles/detail/${role._id}` class="btn btn-secondary mx-1") Chi tiết
-                a(href=`/admin/roles/edit/${role._id}` class="btn btn-warning mx-1") Sửa
-                button(href="" class="btn btn-danger mx-1 btn-delete" data-update=role._id) Xoá 
+                - else 
+                  - if(role.status === "active")
+                    span Đang hoạt động 
+                  - else
+                    span Dừng hoạt động
+              td
+                a(href=`/admin/roles/detail/${item._id}` class="btn btn-secondary mx-1") Chi tiết
+                - if (role.permissions.includes("role-role-edit"))
+                  a(href=`/admin/roles/edit/${item._id}` class="btn btn-warning mx-1") Sửa
+                - if (role.permissions.includes("role-role-delete"))
+                  button(href="" class="btn btn-danger mx-1 btn-delete" data-update=item._id) Xoá 
       .container.text-center
         nav(aria-label="Page navigation example")
           ul(class="pagination")

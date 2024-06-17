@@ -8,40 +8,41 @@ block main
       include ../../partials/topbar.pug
       .container.text-center
         h2.m-3 Thêm chủ đề
-      .container 
-        form(class="form-group" method="POST" action=`/admin/topics/edit/${topic.id}?_method=PATCH` enctype="multipart/form-data")
-          .mb-3
-            label.form-label(for='title') Tiêu đề 
-            input.form-control(type='text' name="title" id="title" value=topic.title)
-          .mb-3
-            label.form-label(for='description') Mô tả
-            textarea.form-control(rows="2" name="description" id="description" ) #{topic.description} 
-          .mb-3
-            - if (topic.status === "active") 
-                .form-check-inline
-                    label(for="active" class="form-check-label")
-                        input(type="radio" class="form-check-input" id="active" name="status" checked value="active") 
-                        span Hoạt động
-                .form-check-inline
-                    label(for="inactive" class="form-check-label") 
-                        input(type="radio" class="form-check-input" id="inactive" name="status" value="inactive") 
-                        span Dừng hoạt động
-            - else
-                .form-check-inline
-                    label(for="active" class="form-check-label")
-                        input(type="radio" class="form-check-input" id="active" name="status" value="active") 
-                        span Hoạt động
-                .form-check-inline
-                    label(for="inactive" class="form-check-label") 
-                        input(type="radio" class="form-check-input" id="inactive" name="status" checked value="inactive") 
-                        span Dừng hoạt động 
-          div(class="mb-3" upload-image) 
-            label(class="form-label d-block") Hình ảnh
-            input(type="file" accept="image/*" class="form-file d-block" name="avatar" value=topic.avatar upload-image-input)
-            div
-                div(class = "" close-image-upload) x 
-                img(src=topic.avatar  alt="" upload-image-preview width="200px" class="d-inline" max-height="200px")   
-          button.btn.btn-primary(type='submit') Submit
+      - if (role.permissions.includes("role-topic-edit"))
+        .container 
+          form(class="form-group" method="POST" action=`/admin/topics/edit/${topic.id}?_method=PATCH` enctype="multipart/form-data")
+            .mb-3
+              label.form-label(for='title') Tiêu đề 
+              input.form-control(type='text' name="title" id="title" value=topic.title)
+            .mb-3
+              label.form-label(for='description') Mô tả
+              textarea.form-control(rows="2" name="description" id="description" ) #{topic.description} 
+            .mb-3
+              - if (topic.status === "active") 
+                  .form-check-inline
+                      label(for="active" class="form-check-label")
+                          input(type="radio" class="form-check-input" id="active" name="status" checked value="active") 
+                          span Hoạt động
+                  .form-check-inline
+                      label(for="inactive" class="form-check-label") 
+                          input(type="radio" class="form-check-input" id="inactive" name="status" value="inactive") 
+                          span Dừng hoạt động
+              - else
+                  .form-check-inline
+                      label(for="active" class="form-check-label")
+                          input(type="radio" class="form-check-input" id="active" name="status" value="active") 
+                          span Hoạt động
+                  .form-check-inline
+                      label(for="inactive" class="form-check-label") 
+                          input(type="radio" class="form-check-input" id="inactive" name="status" checked value="inactive") 
+                          span Dừng hoạt động 
+            div(class="mb-3" upload-image) 
+              label(class="form-label d-block") Hình ảnh
+              input(type="file" accept="image/*" class="form-file d-block" name="avatar" value=topic.avatar upload-image-input)
+              div
+                  div(class = "" close-image-upload) x 
+                  img(src=topic.avatar  alt="" upload-image-preview width="200px" class="d-inline" max-height="200px")   
+            button.btn.btn-primary(type='submit') Submit
       
       // Footer
       footer.sticky-footer.bg-white

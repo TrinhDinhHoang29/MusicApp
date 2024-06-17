@@ -142,12 +142,12 @@ export const changeMulti = async (req:Request,res:Response):Promise<void>=>{
 export const edit = async (req:Request,res:Response):Promise<void>=>{
     try{
         const idRole = req.params.id;
-        const role = await rolesModel.findOne({_id:idRole});
-        const account = await accountsModel.find({_id:role.createdBy["id"]});
-        role["fullNameCreater"] = account["fullName"];
+        const roleEdit = await rolesModel.findOne({_id:idRole});
+        const account = await accountsModel.find({_id:roleEdit.createdBy["id"]});
+        roleEdit["fullNameCreater"] = account["fullName"];
         
     
-    res.render("admin/pages/roles/edit",{role:role})
+    res.render("admin/pages/roles/edit",{roleEdit:roleEdit})
     }catch(error){
         res.redirect("back");
     }

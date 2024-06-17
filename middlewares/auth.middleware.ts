@@ -1,4 +1,5 @@
 import accountModel from '../models/account.model';
+import roleModel from '../models/roles.model';
 import { Request,Response,NextFunction } from 'express';
  
 // const roleModel = require("../../models/roles.model");
@@ -13,6 +14,6 @@ export  const checkToken = async (req:Request,res:Response,next:NextFunction):Pr
         return;
     }
     res.locals.account = account;
-    // res.locals.role = await roleModel.findOne({_id:user.roleId,deleted:false});
+    res.locals.role = await roleModel.findOne({_id:account.roleId,deleted:false});
     next();
 }

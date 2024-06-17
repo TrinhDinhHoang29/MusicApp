@@ -2,6 +2,7 @@ import express,{Express, Request,Response} from 'express';
 import accountModel from '../../models/account.model';
 import * as isValid from "../../validates/isValids.validates";
 import paginationHelper from '../../helpers/pagination';
+import roleModel from '../../models/roles.model';
 import md5 from 'md5'
 export const index = async (req:Request,res:Response):Promise<void>=>{
     type typeFilter={
@@ -44,14 +45,15 @@ export const index = async (req:Request,res:Response):Promise<void>=>{
 }
 export const create = async (req:Request,res:Response):Promise<void>=>{
 
-    res.render("admin/pages/accounts/create",{});
+    const roles = await roleModel.find({status:"active",deleted:false});
+    res.render("admin/pages/accounts/create",{roles:roles});
 }
 export const createPost = async (req:Request,res:Response):Promise<void>=>{
     const accountBody = {
         fullName:req.body.fullName,
         email:req.body.email,
         password:md5(req.body.password),
-        roleId:"",
+        roleId:req.body.roleId,
         avatar:req.body.avatar,
         status:req.body.status,
 
@@ -78,13 +80,13 @@ export const detail = async (req:Request,res:Response):Promise<void>=>{
 }
 export const edit = async (req:Request,res:Response):Promise<void>=>{
     const idAccount = req.params.id;
+    const roles = await roleModel.find({status:"active",deleted:false});
     try{
         const account = await accountModel.findOne({_id:idAccount}).select("-password -token");
-        res.render("admin/pages/accounts/edit",{account:account})
+        res.render("admin/pages/accounts/edit",{account:account,roles:roles})
     }catch(error){
         res.redirect("back");
     }
-    
 
 }
 export const editPatch = async(req:Request,res:Response):Promise<void>=>{
@@ -92,7 +94,7 @@ export const editPatch = async(req:Request,res:Response):Promise<void>=>{
     const accountBody = {
         fullName:req.body.fullName,
         email:req.body.email,
-        roleId:"",
+        roleId:req.body.roleId,
         avatar:req.body.avatar,
         status:req.body.status,
 
