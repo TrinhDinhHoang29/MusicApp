@@ -12,7 +12,11 @@ router.patch("/edit/:id",validate.valiCreate,rolesController.editPatch);
 
 router.post("/create",validate.valiCreate,rolesController.createPost);
 router.patch("/:actionUpdate/:id/:status",rolesController.actionUpdate);
-router.patch("/change-multi",rolesController.changeMulti)
+router.patch("/change-multi",rolesController.changeMulti);
+router.get("/permissions",rolesController.permissions);
+router.patch("/permissions",rolesController.permissionsPatch);
+
+
 export default router;
 
 

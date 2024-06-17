@@ -172,3 +172,39 @@ export const editPatch = async(req:Request,res:Response):Promise<void>=>{
         res.redirect("back");
     }
 }
+
+
+export const permissions = async (req:Request,res:Response):Promise<void>=>{
+    const roles = await rolesModel.find({status:"active" ,deleted:false});
+    res.render("admin/pages/roles/permissions",{roles:roles});
+
+}
+export const permissionsPatch = async (req:Request,res:Response):Promise<void>=>{
+    
+    try{
+        const bodyPermissions:[{
+            id:string,
+            permissions:[]
+        }] = req.body;
+        for(const item of bodyPermissions){
+            await roles.updateOne({
+                _id:item.id
+            },{
+                permissions:item.permissions
+            })
+        }
+        res.json({
+            code:200,
+            mess:"Update success!!"
+        })
+    }catch(error){
+        res.json({
+            code:404,
+            mess:"Update error!!"
+        })
+    }
+    
+
+    
+
+}

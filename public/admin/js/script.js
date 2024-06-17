@@ -278,3 +278,58 @@ if(sendOtp){
 
 
 //end send otp
+
+
+
+// permission
+const btnUpdateRole = document.querySelector("[btn-update-roles]");
+if(btnUpdateRole){
+    btnUpdateRole.addEventListener("click",()=>{
+        const idRoleElements = document.querySelectorAll("[id-role]");
+        let objUpdatePermissions = [];
+        idRoleElements.forEach(item=>{
+            objUpdatePermissions.push({
+                id:item.getAttribute("id-role"),
+                permissions:[]
+            })
+        });
+        const rows = document.querySelectorAll("[row]");
+        rows.forEach((row,index)=>{
+            const inputPermissions = row.querySelectorAll("input[act]");
+            inputPermissions.forEach((input,index)=>{
+                const permission = input.getAttribute("act");
+                if(input.checked===true)
+                    objUpdatePermissions[index].permissions.push(permission);
+            })
+        })
+        const option = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              method: "PATCH",
+              body: JSON.stringify(objUpdatePermissions)
+        }
+        fetch("/admin/roles/permissions",option);
+    })
+
+}
+
+const strDataRole = document.querySelector("[data-role]");
+if(strDataRole){
+    const dataRole = JSON.parse(strDataRole.getAttribute("data-role"));
+    
+    dataRole.forEach((role,index)=>{
+        const rows = document.querySelectorAll("[row]");
+        rows.forEach((row)=>{
+            const inputPermissions = row.querySelectorAll("[act]");
+            const valueinputPermission = inputPermissions[index].getAttribute("act");
+            if(role.permissions.includes(valueinputPermission))
+                inputPermissions[index].checked=true;
+        })
+    })
+    
+}
+//end permission
+
+
