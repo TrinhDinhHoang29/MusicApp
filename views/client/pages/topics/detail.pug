@@ -2,15 +2,7 @@ extends ../../layouts/default.pug
 block main
     .main-content2
         .title-first.my-3 
-            h5 Chủ đề nổi bật
-        ul.banner-topic.d-flex.my-3
-            each topic in topics
-                li
-                    a(href=`/topics/detail/${topic.slug}`)
-                        img(src=topic.avatar width="80%"  alt="")
-                    .title-topic #{topic.title}                
-        .title-second.my-3 
-            h5 Mới phát hành
+            h5 Chủ đề #{topic.title}
         .product-list.p-0
             each song,index in songs
                 .product-item.d-flex 

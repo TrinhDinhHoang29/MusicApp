@@ -22,10 +22,8 @@ block main
               select(name="categoryId" class="form-control text-center") 
                 option(value="" disabled  name="") -- Vui lòng chọn chủ đề --
                 each category in categorys 
-                  - if (category._id = topic.categoryId)
-                    option(value=category._id selected name="") #{category.title} 
-                  - else
-                    option(value=category._id name="") #{category.title} 
+                  option(value=category._id selected=(category._id == topic.categoryId?true:false) ) #{category.title} 
+                 
             .mb-3
               - if (topic.status === "active") 
                   .form-check-inline

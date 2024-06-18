@@ -3,7 +3,8 @@ import * as songsController from '../../controllers/client/songs.controller';
 const router = Router();
 
 
-router.get("/:id",songsController.index)
+router.get("/:slug",songsController.index)
+router.get("/detail/:slug",songsController.detail);
 
 
 export default router;

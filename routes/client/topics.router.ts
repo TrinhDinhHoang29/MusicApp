@@ -5,6 +5,7 @@ const router = Router();
 
 router.get("/",topicController.index)
 
+router.get("/detail/:slug",topicController.detail)
 
 export default router;
 
