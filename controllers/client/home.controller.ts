@@ -4,7 +4,6 @@ import topicsModel from '../../models/topic.model';
 import singersModel from '../../models/singer.model';
 
 export const index = async (req:Request,res:Response):Promise<void>=>{
-
     try {
         const topics = await topicsModel.find({
             status:"active",

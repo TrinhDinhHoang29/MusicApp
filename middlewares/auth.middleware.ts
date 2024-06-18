@@ -1,5 +1,6 @@
 import accountModel from '../models/account.model';
 import roleModel from '../models/roles.model';
+import usertModel from '../models/user.model';
 import { Request,Response,NextFunction } from 'express';
  
 // const roleModel = require("../../models/roles.model");
@@ -16,4 +17,16 @@ export  const checkToken = async (req:Request,res:Response,next:NextFunction):Pr
     res.locals.account = account;
     res.locals.role = await roleModel.findOne({_id:account.roleId,deleted:false});
     next();
+}
+export const existsTokenUser = async (req:Request,res:Response,next:NextFunction):Promise<void>=>{
+    if(req.cookies.tokenUser){
+        const user = await usertModel.findOne({deleted:false,status:"active",tokenUser:req.cookies.tokenUser}).select("-password");
+        if(user){
+            res.locals.userInfo = user;
+        }
+            
+    }
+
+    next();
+
 }
