@@ -56,6 +56,4 @@ export const changeEmailPatch = async (req:Request,res:Response):Promise<void>=>
         req["flash"]("success","Cập nhật thành công !!!");
         res.redirect("/admin/profile");
     }
-
-    
 }

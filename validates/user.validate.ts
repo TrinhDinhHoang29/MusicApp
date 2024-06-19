@@ -34,19 +34,38 @@ export const valiLogin = async(req:Request,res:Response,next:NextFunction):Promi
     
     next();
 }
-// export const valiEdit = async(req:Request,res:Response,next:NextFunction):Promise<void>=>{
-//     const {fullName,email,status} = req.body;
-//     let existsEmail:boolean = false;
-//     const id = req.params.id;
-//     const accountEmail = await accountModel.findOne({_id:id,email:email});
-//     if(!accountEmail){
-//         existsEmail = await isEmail(email);
-//     }
-//     if(!fullName.trim()||!email.trim()||!status.trim()||existsEmail){
-//         req["flash"]("error","Sửa thất bại!!!");
-//         res.redirect("back");
-//         return;
-//     }
-//     next();
+export const valiEdit = async(req:Request,res:Response,next:NextFunction):Promise<void>=>{
+    const {fullName} = req.body;
+    if(!fullName.trim()){
+        req["flash"]("error","Tạo tài khoản thất bại!!!");
+        res.redirect("back");
+        return;
+    }
+    next();
+}
+export const changeEmailValid = async(req:Request,res:Response,next:NextFunction):Promise<void>=>{
+    const {email,otp} = req.body;
+    let existsEmail:boolean = await isEmail(email);
+    if(!email.trim()||!otp.trim()||existsEmail){
+        req["flash"]("error","Cập nhật thất bại !!!");
+        res.redirect("back");
+        return;
+    }
+    
+    next();
+}
 
-// }
+export const changePasswordValid = (req:Request,res:Response,next:NextFunction):void=>{
+    const {password,passwordNew,rePasswordNew} = req.body;
+    if(!password.trim()||!passwordNew.trim()||!rePasswordNew.trim()){
+        req["flash"]("error","Cập nhật thất bại !!!");
+        res.redirect("back");
+        return;
+    }
+    if(passwordNew!==rePasswordNew){
+        req["flash"]("error","Cập nhật thất bại !!!");
+        res.redirect("back");
+        return;
+    }
+    next();
+}

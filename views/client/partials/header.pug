@@ -4,10 +4,14 @@
             input(class="form-control")
             button(class="btn px-3")
                 i(class="fa-solid fa-magnifying-glass") 
-    .col-4.d-flex.justify-content-evenly 
-        a(href="" class = "btn text-light")
+    .col-6.d-flex.justify-content-evenly
+        a(href=(userInfo?"/favorite":"/login") class="btn text-light") 
+            i(class="fa-solid fa-heart text-danger")
+            span.mx-2 Yêu thích  
+        a(href=(userInfo?"/profile":"/login") class = "btn text-light")
             i(class="fa-solid fa-user")
             span.mx-2 Hồ sơ
-        a(href="" class="btn text-light") 
-            i(class="fa-solid fa-heart text-danger")
-            span.mx-2 Yêu thích 
+        - if (userInfo) 
+            a(href="/logout" class = "btn text-light")
+                i(class="fa-solid fa-right-from-bracket")
+                span.mx-2 Đăng xuất
