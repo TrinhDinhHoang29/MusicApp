@@ -2,7 +2,7 @@ import express,{Express, Request,Response} from 'express';
 import songsModel from '../../models/song.model';
 import topicsModel from '../../models/topic.model';
 import singersModel from '../../models/singer.model';
-
+import conVertToSlug from '../../helpers/convertToSlug.helper';
 export const index = async (req:Request,res:Response):Promise<void>=>{
     try {
         const topics = await topicsModel.find({

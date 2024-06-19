@@ -5,6 +5,7 @@ import songRouter from './songs.router';
 import authRouter from './auth.router';
 import profileRouter from './profile.router';
 import otpRouter from './otp.router';
+import searchRouter from './search.router';
 import * as authMiddleware from '../../middlewares/auth.middleware';
 export default (app:Express)=>{
     app.use(authMiddleware.existsTokenUser);
@@ -14,5 +15,7 @@ export default (app:Express)=>{
     app.use("/",authRouter);
     app.use("/profile",authMiddleware.existsUserInfo,profileRouter);
     app.use("/otps",otpRouter);
+    app.use("/search",searchRouter);
+
 
 }

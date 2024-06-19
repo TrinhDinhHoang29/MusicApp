@@ -4,6 +4,7 @@
     padding: 0;
     box-sizing: border-box;
     color: white;
+    text-decoration: none !important;
     list-style: none;
 
 }
@@ -80,7 +81,25 @@ ul>li>a{
 .aplayer-title{
     font-size: larger !important;
 }
-.title-topic {
+.title-topic{
     width: 80%;
 }
-   
+.result-find-header{
+    height: 60px;
+}
+.suggest-find-header{
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    left: 0;
+    top: 100%;
+}
+.inner-find-text div,h7{
+    color:black
+}
+.inner-find-singer{
+    font-size: small;
+}
+.inner-find-img{
+    height: 100%;
+}
