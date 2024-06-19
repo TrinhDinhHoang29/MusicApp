@@ -26,7 +26,12 @@ export const existsTokenUser = async (req:Request,res:Response,next:NextFunction
         }
             
     }
-
     next();
-
+}
+export const existsUserInfo = async (req:Request,res:Response,next:NextFunction):Promise<void>=>{
+    if(res.locals.userInfo){
+        next();
+    }else{
+        res.redirect("/login");
+    }
 }

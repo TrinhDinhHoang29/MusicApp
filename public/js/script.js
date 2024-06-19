@@ -76,26 +76,46 @@ if(closeImage){
 //close img end ---------------------------
 
 //send otp 
+const funcSendOtp = (url,option)=>{
+    fetch(url,option)
+    .then(res=>res.json())
+    .then(data=>{
+        const mess = document.querySelector("[message-otp]")
+        const label = mess.querySelector("label");
+        if(data.code==200){
+            label.textContent = "Đã gửi otp thành công";
+        }else{
+            label.textContent = "Không gửi otp được";
+        }
+    })
+}
 const sendOtp = document.querySelector("[send-otp-client]");
 if(sendOtp){
     sendOtp.addEventListener("click",()=>{
         const option = {
             method:"POST"
         }
-        fetch("/otps/create",option)
-        .then(res=>res.json())
-        .then(data=>{
-            const mess = document.querySelector("[message-otp]")
-            const label = mess.querySelector("label");
-            if(data.code==200){
-                label.textContent = "Đã gửi otp thành công";
-            }else{
-                label.textContent = "Không gửi otp được";
-
-            }
-        })
+        funcSendOtp("/otps/create",option);
     })
 }
 
+const sendOtpForgotPassword = document.querySelector("[send-otp-forgot-password]");
+if(sendOtpForgotPassword){
+    sendOtpForgotPassword.addEventListener("click",()=>{
+        const email = document.querySelector("[email-forgot-password]").value;
+        const option = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              method: "POST",
+              body: JSON.stringify({
+                email:email
+              })
+            
+        }
+        funcSendOtp("/otps/create-forgot-password",option);
+    })
+}
 
 //end send otp

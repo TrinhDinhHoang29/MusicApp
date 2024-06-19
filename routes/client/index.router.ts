@@ -12,7 +12,7 @@ export default (app:Express)=>{
     app.use("/topics",topicRouter);
     app.use("/songs",songRouter);
     app.use("/",authRouter);
-    app.use("/profile",profileRouter);
+    app.use("/profile",authMiddleware.existsUserInfo,profileRouter);
     app.use("/otps",otpRouter);
 
 }

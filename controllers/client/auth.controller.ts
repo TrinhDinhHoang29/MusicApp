@@ -1,5 +1,6 @@
 import express,{Express, Request,Response} from 'express';
 import usersModel from '../../models/user.model';
+import otpModel from '../../models/otp.model';
 import md5 from 'md5';
 export const login = async (req:Request,res:Response):Promise<void>=>{
 
@@ -50,3 +51,49 @@ export const registerPost = async (req:Request,res:Response):Promise<void>=>{
     
     
 } 
+export const logOut = (req:Request,res:Response)=>{
+    res.clearCookie("tokenUser");
+    res.redirect("/login");
+}
+export const forgotPassowrd = (req:Request,res:Response)=>{
+    res.render("client/pages/auth/forgot-password");
+}
+export const forgotPassowrdPatch = async (req:Request,res:Response):Promise<void>=>{
+    const isOTP = await otpModel.findOne({
+        otp:req.body.otp,
+        email:req.body.email
+    });
+    if(isOTP){
+        const user = await usersModel.findOne({email:req.body.email});
+        res.cookie("tokenUser",user.tokenUser,{expires: new Date(Date.now()+360*24*60*60*1000)});
+        await otpModel.deleteOne({otp:req.body.otp});
+        res.redirect("/comfirm-password-new");
+    }else{
+        req["flash"]("error","Không thành công !!");
+        res.redirect("back");
+    }
+}
+
+export const comfirmPasswordNew = async (req:Request,res:Response):Promise<void>=>{
+    res.render("client/pages/auth/comfirm-password-new")
+}
+export const comfirmPasswordNewPatch = async (req:Request,res:Response):Promise<void>=>{
+    if(req.body.password===req.body.rePassword){
+        try{
+            await usersModel.updateOne({
+                email:res.locals.userInfo.email
+            },{
+                password:md5(req.body.password)
+            })
+            res.redirect("/home");
+        }catch(error){
+            console.log(error);
+            res.send("Server error !!");
+        }
+    }else{
+        req["flash"]("error","Mật khẩu không khớp !!");
+        res.redirect("back");
+    }
+    
+    
+}
