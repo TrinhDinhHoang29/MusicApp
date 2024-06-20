@@ -34,3 +34,48 @@ export const detail = async (req:Request,res:Response):Promise<void>=>{
         res.status(500).send("Internal Server Error");
     }
 }
+export const like = async (req:Request,res:Response):Promise<void>=>{
+    
+    try {
+        const idSong = req.params.idSong;
+        const idUser:string = res.locals.userInfo.id;
+        const song = await songsModel.findOne({
+            _id:idSong,
+            like:{
+                $in:idUser
+            }
+        });
+        if(song){
+            await songsModel.findOneAndUpdate({
+                _id:idSong
+            },{
+                $pull:{
+                    like:idUser
+                }
+            })
+            res.json({
+                code:200,
+                idSong:idSong,
+                type:"Cancel"
+            })
+        }else{
+            await songsModel.findOneAndUpdate({
+                _id:idSong
+            },{
+                $push:{
+                    like:idUser
+                }
+            })
+            res.json({
+                code:200,
+                idSong:idSong,
+                type:"Like"
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        res.json({
+            code:404
+        })
+    }
+}

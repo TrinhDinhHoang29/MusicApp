@@ -1,4 +1,6 @@
 extends ../../layouts/default.pug
+include ../../mixins/list-music.pug
+
 block main
     .main-content2
         .title-first.my-3 
@@ -11,20 +13,7 @@ block main
                     .title-topic #{topic.title}                
         .title-second.my-3 
             h5 Mới phát hành
-        .product-list.p-0
-            each song,index in songs
-                .product-item.d-flex 
-                    .inner-avatar-music.mx-3
-                        a(href=`/songs/detail/${song.slug}`) 
-                            img(src=song.avatar width="100px" height="100px" alt="")
-                    .inner-body-music
-                        .inner-name-music #{song.title}
-                        .inner-singer-music #{song.fullNameSinger}
-                    a(class="love-music") 
-                        i(class="fa-solid fa-heart")
-                    a(class="like-music") 
-                        i(class="fa-solid fa-thumbs-up")
-            
+        +list-music(songs)
                    
                          
 

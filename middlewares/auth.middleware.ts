@@ -1,6 +1,7 @@
 import accountModel from '../models/account.model';
 import roleModel from '../models/roles.model';
 import usertModel from '../models/user.model';
+import favoriteModel from '../models/favorite-music.model';
 import { Request,Response,NextFunction } from 'express';
  
 // const roleModel = require("../../models/roles.model");
@@ -22,10 +23,13 @@ export const existsTokenUser = async (req:Request,res:Response,next:NextFunction
     if(req.cookies.tokenUser){
         const user = await usertModel.findOne({deleted:false,status:"active",tokenUser:req.cookies.tokenUser}).select("-password");
         if(user){
+            const favorites = await favoriteModel.find({userId:user.id});
+            res.locals.favoritesLocal = favorites;
             res.locals.userInfo = user;
         }
             
     }
+
     next();
 }
 export const existsUserInfo = async (req:Request,res:Response,next:NextFunction):Promise<void>=>{

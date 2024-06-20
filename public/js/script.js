@@ -149,7 +149,7 @@ if(findHeader){
                 elementA.classList.add("my-1")
                 elementA.classList.add("mx-3")
                 elementA.classList.add("row")
-                elementA.href = `/search?keyword=${song.slug}`;
+                elementA.href = `/songs/detail/${song.slug}`;
                 elementA.innerHTML = `
                 <div class="inner-find-img col-3"> 
                     <img src="${song.avatar}" width="100%" height="100%" alt="" />
@@ -171,3 +171,25 @@ if(findHeader){
 
 
 // findSuggest
+
+
+
+
+//favorite 
+const loveMusics = document.querySelectorAll(".love-music");
+if(loveMusics.length>0){
+    loveMusics.forEach(loveMusic=>{
+        loveMusic.addEventListener("click",()=>{
+            const idSong = loveMusic.getAttribute("data-id-song");
+            fetch(`/favorites/create/${idSong}`)
+            .then(res=>res.json())
+            .then(data=>{
+                if(data.code===200){
+                    loveMusic.querySelector("i").classList.toggle("text-danger");
+                }
+            })
+        })
+    })
+}
+
+//end favorite

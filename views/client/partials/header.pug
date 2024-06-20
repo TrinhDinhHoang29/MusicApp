@@ -1,7 +1,7 @@
 .head-content2.container.py-3.row
-    form(action="" class="col-6" method="get")
+    form(action="/search" class="col-6" method="get")
         .input-group.find-header
-            input(class="form-control")
+            input(class="form-control" name="keyword")
             button(class="btn px-3")
                 i(class="fa-solid fa-magnifying-glass")
             .suggest-find-header.show
