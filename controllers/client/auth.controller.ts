@@ -1,8 +1,9 @@
-import express,{Express, Request,Response} from 'express';
+import express,{Express, Request,RequestHandler,Response} from 'express';
 import usersModel from '../../models/user.model';
 import otpModel from '../../models/otp.model';
 import md5 from 'md5';
 export const login = async (req:Request,res:Response):Promise<void>=>{
+
 
     res.render("client/pages/auth/login");
     

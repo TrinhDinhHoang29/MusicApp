@@ -20,6 +20,16 @@ const app:Express = express();
 const port:number|string = process.env.PORT||8080;
 
 
+//socket
+// import { Server,Socket } from 'socket.io';
+// import { createServer } from 'http';
+// const server = createServer(app);
+// const io = new Server(server);
+// io.on('connection',()=>{
+//     console.log("ok");
+// })
+
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 
@@ -30,7 +40,7 @@ app.use(session({cookie:{maxAge:6000}}));
 app.use(flash());
 // flash end ------------------
 
-app.set("views","./views");
+app.set("views",`${__dirname}/views`);
 app.set("view engine","pug");
 app.use(express.static(`${__dirname}/public`));
 app.use(express.json());
@@ -39,6 +49,7 @@ app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce
 
 routerClient(app);
 routerAdmin(app);
+
 app.get("*",(req,res)=>{
     res.send("bug");
 })

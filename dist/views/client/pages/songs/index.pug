@@ -1,0 +1,39 @@
+extends ../../layouts/default.pug
+block main
+    .main-content2
+        .title-first.my-3 
+            h5 Chi tiết bài hát
+        .title-music.m-3
+            h2 #{song.title}
+        
+        .action-music.my-3
+            ul.d-flex.justify-content-evenly
+                li 
+                    a(href="")
+                        i( class="fa-regular fa-clock")
+                        span.my-1 #{song.createdAt}
+                li 
+                    a(href="") 
+                        i(class="fa-solid fa-microphone")
+                        span.mx-1 #{song.fullNameSinger}
+                li 
+                    a(href="") 
+                        i(class="fa-solid fa-heart")
+                        span.mx-1 Yêu thích 
+                li 
+                    a() 
+                        i(class="fa-solid fa-thumbs-up")
+                        span.mx-1 Thích
+        .inner-play.row.my-3 
+            .inner-avatar.col-4 
+                img(src=song.avatar width="80%" height="200px" alt="")
+            div(data-song = song).inner-audio.col-8 
+                div(id="aplayer")
+        .inner-lyrics 
+            h2 Lời bài hát 
+            div !{song.lyrics}
+        
+            
+                   
+                         
+
