@@ -176,7 +176,7 @@ if(findHeader){
 
 
 //favorite 
-const loveMusics = document.querySelectorAll(".love-music");
+const loveMusics = document.querySelectorAll("[love-music]");
 if(loveMusics.length>0){
     loveMusics.forEach(loveMusic=>{
         loveMusic.addEventListener("click",()=>{

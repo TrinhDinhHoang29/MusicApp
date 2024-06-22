@@ -9,19 +9,29 @@ block main
         .action-music.my-3
             ul.d-flex.justify-content-evenly
                 li 
-                    a(href="")
+                    a( class="btn")
                         i( class="fa-regular fa-clock")
                         span.my-1 #{song.createdAt}
                 li 
-                    a(href="") 
+                    a( class="btn") 
                         i(class="fa-solid fa-microphone")
                         span.mx-1 #{song.fullNameSinger}
                 li 
-                    a(href="") 
-                        i(class="fa-solid fa-heart")
-                        span.mx-1 Yêu thích 
+                    - if (favoritesLocal)
+                        - if(favoritesLocal.find(item=>item.userId == userInfo.id && item.songId==song._id))
+                            a(class="btn " love-music data-id-song=song._id) 
+                                i(class="fa-solid fa-heart text-danger")
+                                span.mx-1 Yêu thích 
+                        - else
+                            a(class="btn " love-music data-id-song=song._id) 
+                                i(class="fa-solid fa-heart")
+                                span.mx-1 Yêu thích 
+                    - else 
+                        a(class="btn " love-music data-id-song=song._id) 
+                            i(class="fa-solid fa-heart")
+                            span.mx-1 Yêu thích 
                 li 
-                    a() 
+                    a( class="btn") 
                         i(class="fa-solid fa-thumbs-up")
                         span.mx-1 Thích
         .inner-play.row.my-3 
