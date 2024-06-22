@@ -197,11 +197,19 @@ if(loveMusics.length>0){
 
 
 
-const likeMusics = document.querySelectorAll(".like-music");
+const likeMusics = document.querySelectorAll("[like-music]");
 if(likeMusics.length>0){
     likeMusics.forEach(likeMusic=>{
         likeMusic.addEventListener("click",()=>{
-            socket.broadcast.emit('CLIENT_SEND_LIKE',"asd");
+            const idSong = likeMusic.getAttribute("data-id-song");
+            fetch(`/songs/like/${idSong}`)
+            .then(res=>res.json())
+            .then(data=>{
+                if(data.code===200){
+                    likeMusic.querySelector("span").innerHTML = data.data.like.length;
+                    likeMusic.querySelector("i").classList.toggle("text-secondary");
+                }
+            })
         })
     })
 }

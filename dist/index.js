@@ -51,7 +51,7 @@ app.set("view engine", "pug");
 app.use(express_1.default.static(`${__dirname}/public`));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use('/tinymce', express_1.default.static(path_1.default.join(__dirname, '../node_modules', 'tinymce')));
+app.use('/tinymce', express_1.default.static(path_1.default.join(__dirname, 'node_modules', 'tinymce')));
 (0, index_router_1.default)(app);
 (0, index_router_2.default)(app);
 app.get("*", (req, res) => {

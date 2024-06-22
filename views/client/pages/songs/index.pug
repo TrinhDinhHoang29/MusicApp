@@ -30,10 +30,22 @@ block main
                         a(class="btn " love-music data-id-song=song._id) 
                             i(class="fa-solid fa-heart")
                             span.mx-1 Yêu thích 
-                li 
-                    a( class="btn") 
-                        i(class="fa-solid fa-thumbs-up")
-                        span.mx-1 Thích
+                li  
+                    - if(userInfo)
+                        - if(song.like.includes(userInfo.id))
+                            button(class="btn" like-music data-id-song=song._id) 
+                                span.mx-1 #{song.like.length}
+                                i(class="fa-solid fa-thumbs-up text-secondary")
+                        - else
+                            button(class="btn" like-music data-id-song=song._id) 
+                                span.mx-1 #{song.like.length}
+                                i(class="fa-solid fa-thumbs-up")
+                    - else
+                        button(class="btn" like-music data-id-song=song._id) 
+                            span.mx-1 #{song.like.length}
+                            i(class="fa-solid fa-thumbs-up")
+                                
+                               
         .inner-play.row.my-3 
             .inner-avatar.col-4 
                 img(src=song.avatar width="80%" height="200px" alt="")

@@ -44,5 +44,61 @@ const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.detail = detail;
 const like = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idSong = req.params.idSong;
+        const idUser = res.locals.userInfo.id;
+        const song = yield song_model_1.default.findOne({
+            _id: idSong,
+            like: {
+                $in: idUser
+            }
+        });
+        if (song) {
+            const songUpdated = yield song_model_1.default.findOneAndUpdate({
+                _id: idSong
+            }, {
+                $pull: {
+                    like: idUser
+                }
+            }, {
+                new: true
+            });
+            res.json({
+                code: 200,
+                data: {
+                    id: idSong,
+                    like: songUpdated.like
+                },
+                type: "Cancel"
+            });
+            console.log(songUpdated);
+        }
+        else {
+            const songUpdated = yield song_model_1.default.findOneAndUpdate({
+                _id: idSong
+            }, {
+                $push: {
+                    like: idUser
+                }
+            }, {
+                new: true
+            });
+            res.json({
+                code: 200,
+                data: {
+                    id: idSong,
+                    like: songUpdated.like
+                },
+                type: "Like"
+            });
+            console.log(songUpdated);
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.json({
+            code: 404
+        });
+    }
 });
 exports.like = like;

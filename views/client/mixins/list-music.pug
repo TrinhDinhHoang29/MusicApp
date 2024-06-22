@@ -20,12 +20,15 @@ mixin list-music(songs)
                         i(class="fa-solid fa-heart")
                 - if (userInfo)
                     - if(song.like.includes(userInfo.id))
-                        button(class="like-music btn p-2" href=`/songs/like/${song._id}`) 
+                        button(class="like-music btn p-2" like-music data-id-song=song._id) 
+                            span.ml-1 #{song.like.length}
                             i(class="fa-solid fa-thumbs-up text-secondary")
                     - else 
-                        button(class="like-music btn p-2" href=`/songs/like/${song._id}`) 
+                        button(class="like-music btn p-2" like-music data-id-song=song._id) 
+                            span.ml-1 #{song.like.length}
                             i(class="fa-solid fa-thumbs-up")
                 - else 
-                    button(class="like-music btn p-2") 
+                    button(class="like-music btn p-2" like-music data-id-song=song._id)
+                        span.ml-1 #{song.like.length} 
                         i(class="fa-solid fa-thumbs-up")
             
