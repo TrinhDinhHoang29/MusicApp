@@ -21,13 +21,7 @@ const port:number|string = process.env.PORT||8080;
 
 
 //socket
-// import { Server,Socket } from 'socket.io';
-// import { createServer } from 'http';
-// const server = createServer(app);
-// const io = new Server(server);
-// io.on('connection',()=>{
-//     console.log("ok");
-// })
+
 
 
 app.use(bodyParser.urlencoded({ extended: false }));

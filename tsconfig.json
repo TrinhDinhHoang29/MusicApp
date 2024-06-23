@@ -4,6 +4,8 @@
         "module": "CommonJS",
         "removeComments": true,
         "esModuleInterop": true,
-        "outDir": "dist"
+        "outDir": "dist",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
     }
 }
