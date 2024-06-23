@@ -13,6 +13,10 @@ const songSchema:Schema = new  mongoose.Schema({
         type:Array
     },
     lyrics:String,
+    views:{
+        default:0,
+        type:Number
+    },
     audio:String,
     status:String,
     slug:{

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.like = exports.detail = exports.index = void 0;
+exports.views = exports.like = exports.detail = exports.index = void 0;
 const song_model_1 = __importDefault(require("../../models/song.model"));
 const singer_model_1 = __importDefault(require("../../models/singer.model"));
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -34,6 +34,8 @@ const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const slug = req.params.slug;
         const song = yield song_model_1.default.findOne({ slug: slug }).lean();
         const singer = yield singer_model_1.default.findOne({ _id: song.singerId }).select("fullName");
+        const dataTime = new Date(song.createdAt);
+        song.dateTime = `${dataTime.getDay()}/${dataTime.getMonth()}/${dataTime.getFullYear()}`;
         song.fullNameSinger = singer.fullName;
         res.render("client/pages/songs/index", { song: song });
     }
@@ -102,3 +104,28 @@ const like = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.like = like;
+const views = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const slug = req.params.slug;
+        const songViews = yield song_model_1.default.findOne({ slug: slug }).select("views");
+        const views = songViews.views + 1;
+        const songUpdate = yield song_model_1.default.findOneAndUpdate({
+            slug: slug
+        }, {
+            views: views
+        }, {
+            new: true
+        });
+        res.json({
+            code: 200,
+            views: songUpdate.views
+        });
+    }
+    catch (error) {
+        res.json({
+            code: 404,
+            mess: "Update error"
+        });
+    }
+});
+exports.views = views;

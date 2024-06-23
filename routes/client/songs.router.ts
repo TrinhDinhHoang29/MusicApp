@@ -7,6 +7,7 @@ const router = Router();
 router.get("/:slug",songsController.index)
 router.get("/detail/:slug",songsController.detail);
 router.get("/like/:idSong",authMiddleware.existsUserInfo,songsController.like)
+router.patch("/views/:slug",songsController.views);
 
 
 export default router;

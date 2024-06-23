@@ -18,6 +18,10 @@ const songSchema = new mongoose_1.default.Schema({
         type: Array
     },
     lyrics: String,
+    views: {
+        default: 0,
+        type: Number
+    },
     audio: String,
     status: String,
     slug: {

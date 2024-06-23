@@ -26,8 +26,38 @@ if(dataSongJson){
             cover: dataSong.avatar
         }]
     });
+  
+    ap.on("play",async ()=>{
+        let counter = 0;
 
+        const loadMusic = setInterval(()=>{
+            counter++;
+            if(counter===120){
+                const slug = window.location.href.split("/")[5];
+                fetch(`/songs/views/${slug}`,{
+                    method:"PATCH"
+                })
+                .then(res=>res.json())
+                .then(data=>{
+                    if(data.code===200){
+                        const musicViews = document.querySelector(".views-music");
+                        musicViews.innerHTML = data.views;
+                    }
+                })
+
+            }
+        },1000);
+        
+       
+        
+        ap.on("pause",()=>{
+            clearInterval(loadMusic);
+        })     
+    });
+   
+    
 }
+
 
 
 //end aplayer

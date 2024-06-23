@@ -30,4 +30,5 @@ const router = (0, express_1.Router)();
 router.get("/:slug", songsController.index);
 router.get("/detail/:slug", songsController.detail);
 router.get("/like/:idSong", authMiddleware.existsUserInfo, songsController.like);
+router.patch("/views/:slug", songsController.views);
 exports.default = router;

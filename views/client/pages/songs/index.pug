@@ -11,7 +11,12 @@ block main
                 li 
                     a( class="btn")
                         i( class="fa-regular fa-clock")
-                        span.my-1 #{song.createdAt}
+                        span.mx-1 #{song.dateTime}
+                li 
+                    a(class="btn" )
+                        i( class="fa-solid fa-headphones")
+                        span.mx-1.views-music #{song.views}
+                        span Lượt nghe
                 li 
                     a( class="btn") 
                         i(class="fa-solid fa-microphone")
